@@ -17,7 +17,7 @@ class RouteServiceProvider extends ServiceProvider
      *
      * @var string
      */
-    public const HOME = '/home';
+    public const HOME = '/'; // '/home'을 '/'로 수정. 
 
     /**
      * The controller namespace for the application.

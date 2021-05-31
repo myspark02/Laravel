@@ -19,7 +19,7 @@
                 <a href="{{ route('dashboard') }}" class="p-3">Dashboard</a>
             </li>
             <li>
-                <a href="" class="p-3">Post</a>
+                <a href="{{ route('posts') }}" class="p-3">Post</a>
             </li>
         </ul>
 
@@ -27,8 +27,8 @@
             {{-- @if (auth()->user()) --}}
             @auth
                 <li>
-                    <a href="" class="p-3">scpark</a>
-                </li>
+                    <a href="" class="p-3">{{ auth()->user()->name }}</a>
+                    </i>
                 <li>
                     <form action=" {{ route('logout') }} " method="post" class="p-3 inline">
                         @csrf
