@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Post;
 use Illuminate\Http\Request;
+use Intervention\Image\Facades\Image;
 
 class PostController extends Controller
 {
@@ -24,15 +25,26 @@ class PostController extends Controller
             'image' => 'required|image',
         ]);
 
-        // dd($request->image->store('uploads', 'public'));
+        // dd($request->image->store('uploads'));
         $imagePath = $request->image->store('uploads', 'public');
 
+        // Intervention/image package <= composer require intervention/image 다운로드 받기!
+        // 리사이즈가 아닌 컷
+        // use Intervention\Image\Facades\Image; <= 잊지 말것!
+        $image = Image::make(public_path("storage/$imagePath"))->fit(1200, 1200); // width, height
+        $image->save();
         // $request->user()->posts()->create($data);
         $request->user()->posts()->create([
             'caption' => $data['caption'],
             'image' => $imagePath,
 
         ]);
-        return view('profile.show', ['user' => $request->user()]);
+        return view('profile.index', ['user' => $request->user()]);
+    }
+
+    public function show(Post $post)
+    {
+        // dd($post);
+        return view('post.show', compact('post'));
     }
 }

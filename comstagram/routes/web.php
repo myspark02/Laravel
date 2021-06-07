@@ -25,9 +25,14 @@ Route::get('/dashboard', function () {
 })->middleware(['auth'])->name('dashboard');
 
 
-Route::get('/profile/{user}', [ProfileController::class, 'show'])
-    ->middleware(['auth'])->name('profile.show');
+Route::get('/profile/{user}', [ProfileController::class, 'index'])
+    ->middleware(['auth'])->name('profile.index');
+Route::get('/profile/{user}/edit', [ProfileController::class, 'edit'])
+    ->middleware('auth')->name('profile.edit');
+Route::patch('/profile/{user}', [ProfileController::class, 'update'])
+    ->middleware('auth')->name('profile.update');
 
 Route::get('/p', [PostController::class, 'create'])->name('post.create');
 Route::post('/p', [PostController::class, 'store'])->name('post.store');
+Route::get('/p/{post}', [PostController::class, 'show'])->name('post.show');
 require __DIR__ . '/auth.php';

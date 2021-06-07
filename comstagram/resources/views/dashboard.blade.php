@@ -11,16 +11,17 @@
                 <img src="/img/yju_comp.jpeg" class="rounded-full h-40 w-40" alt="comstagram main image">
             </div>
             <div>
-                <div class="py-5 flex justify-between items-baseline">
+                <div class="py-5 grid grid-cols-2 flex items-baseline">
                     <div class="text-3xl">
                         <h1>{{ $user->username }}</h1>
                     </div>
-                    <div>
-                        <a href="{{ route('post.create') }}">Add new post</a>
+                    <div class="ml-5">
+                        <a href="{{ route('post.create') }}" class="mr-10">Add new post</a>
+                        <a href="{{ route('profile.edit', $user->id) }}">Edit Profile</a>
                     </div>
                 </div>
                 <div class="flex">
-                    <div class="pr-5"><strong>153</strong> posts</div>
+                    <div class="pr-5"><strong>{{ $user->posts->count() }}</strong> posts</div>
                     <div class="pr-5"><strong>23k</strong> followers</div>
                     <div class="pr-5"><strong>212</strong> following</div>
                 </div>
