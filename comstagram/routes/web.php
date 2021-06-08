@@ -26,11 +26,11 @@ Route::get('/dashboard', function () {
 
 
 Route::get('/profile/{user}', [ProfileController::class, 'index'])
-    ->middleware(['auth'])->name('profile.index');
+    ->name('profile.index');
 Route::get('/profile/{user}/edit', [ProfileController::class, 'edit'])
-    ->middleware('auth')->name('profile.edit');
+    ->name('profile.edit');
 Route::patch('/profile/{user}', [ProfileController::class, 'update'])
-    ->middleware('auth')->name('profile.update');
+    ->name('profile.update');
 
 Route::get('/p', [PostController::class, 'create'])->name('post.create');
 Route::post('/p', [PostController::class, 'store'])->name('post.store');

@@ -8,7 +8,8 @@
     <div class="container mx-auto px-4">
         <div class="grid grid-flow-col auto-cols-max">
             <div class="p-10">
-                <img src="/img/yju_comp.jpeg" class="rounded-full h-40 w-40" alt="comstagram main image">
+                <img src="/storage/{{ $user->profile->image }}" class="rounded-full h-40 w-40"
+                    alt="comstagram main image">
             </div>
             <div>
                 <div class="py-5 grid grid-cols-2 flex items-baseline">
@@ -16,8 +17,12 @@
                         <h1>{{ $user->username }}</h1>
                     </div>
                     <div class="ml-5">
-                        <a href="{{ route('post.create') }}" class="mr-10">Add new post</a>
-                        <a href="{{ route('profile.edit', $user->id) }}">Edit Profile</a>
+                        @can('update', $user->profile)
+                            <a href="{{ route('post.create') }}" class="mr-10">Add new post</a>
+                        @endcan
+                        @can('update', $user->profile)
+                            <a href="{{ route('profile.edit', $user->id) }}">Edit Profile</a>
+                        @endcan
                     </div>
                 </div>
                 <div class="flex">
