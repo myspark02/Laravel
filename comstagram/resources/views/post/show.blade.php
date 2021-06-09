@@ -11,10 +11,13 @@
         </div>
         <div class="mt-5">
             <div class="flex items-center mb-4">
-                <img src="/storage/{{ $post->user->profile->image }}" class=" w-24 rounded-full mr-4">
-                <span class="font-bold">
+                <img src="{{ $post->user->profile->profileImage() }}" class=" w-24 rounded-full mr-4">
+                <span class="font-bold flex">
                     <a href="{{ route('profile.index', $post->user->id) }}">
                         {{ $post->user->username }}
+                    </a>
+                    <a href="" class="pl-3">
+                        <x-follow-button />
                     </a>
                 </span>
             </div>

@@ -34,7 +34,7 @@
                 </div>
             </div>
         </div>
-        <div class="grid grid-flow-col auto-cols-max pt-5">
+        <div class="grid grid-flow-col auto-cols-max pt-5 mb-20">
             <div class="grid-cols-4 pr-2">
                 <img src="/img/1.jpeg" class="w-32 md:w-auto">
             </div>

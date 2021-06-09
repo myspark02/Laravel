@@ -8,13 +8,14 @@
     <div class="container mx-auto px-4">
         <div class="grid grid-flow-col auto-cols-max">
             <div class="p-10">
-                <img src="/storage/{{ $user->profile->image }}" class="rounded-full h-40 w-40"
+                <img src="{{ $user->profile->profileImage() }}" class="rounded-full h-40 w-40"
                     alt="comstagram main image">
             </div>
             <div>
-                <div class="py-5 grid grid-cols-2 flex items-baseline">
-                    <div class="text-3xl">
-                        <h1>{{ $user->username }}</h1>
+                <div class="py-5 grid grid-cols-2 flex items-center">
+                    <div class="text-3xl flex align-baseline">
+                        <h1 class="mr-10">{{ $user->username }}</h1>
+                        <x-follow-button />
                     </div>
                     <div class="ml-5">
                         @can('update', $user->profile)
