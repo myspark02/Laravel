@@ -26,15 +26,15 @@
                     <div class="pr-5"><strong>212</strong> following</div>
                 </div>
                 <div>
-                    <div class="mt-3 font-bold">{{ $user->profile->title ?? 'No profile yet'}}</div>
+                    <div class="mt-3 font-bold">{{ $user->profile->title ?? 'No title' }}</div>
                     <div class="max-w-sm md:max-w-lg">
-                        {{ $user->profile->description ?? 'No profile description yet'}}
+                        {{ $user->profile->description ?? 'No description' }}
                     </div>
-                    <div><a href="#">{{ $user->profile->url ?? 'No profile url yet'}}</a></div>
+                    <div><a href="#">{{ $user->profile->url ?? 'No url' }}</a></div>
                 </div>
             </div>
         </div>
-        <div class="grid grid-flow-col auto-cols-max pt-5">
+        <div class="grid grid-flow-col auto-cols-max pt-5 mb-20">
             <div class="grid-cols-4 pr-2">
                 <img src="/img/1.jpeg" class="w-32 md:w-auto">
             </div>
