@@ -26,11 +26,11 @@
                     <div class="pr-5"><strong>212</strong> following</div>
                 </div>
                 <div>
-                    <div class="mt-3 font-bold">{{ $user->profile->title }}</div>
+                    <div class="mt-3 font-bold">{{ $user->profile->title ?? 'No profile yet'}}</div>
                     <div class="max-w-sm md:max-w-lg">
-                        {{ $user->profile->description }}
+                        {{ $user->profile->description ?? 'No profile description yet'}}
                     </div>
-                    <div><a href="#">{{ $user->profile->url }}</a></div>
+                    <div><a href="#">{{ $user->profile->url ?? 'No profile url yet'}}</a></div>
                 </div>
             </div>
         </div>
