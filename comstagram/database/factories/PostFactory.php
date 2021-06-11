@@ -23,9 +23,9 @@ class PostFactory extends Factory
     public function definition()
     {
         return [
-            'caption' => $this->faker->sentence(10), 
-            'user_id' => User::factory(), 
-            'image' => $this->faker->imageUrl(360, 360, 'naimals', true, 'dogs'),
+            'caption' => $this->faker->sentence(10),
+            'user_id' => User::factory(),
+            'image' => $this->faker->imageUrl(360, 360, 'animals', true, 'dogs'),
         ];
     }
 }
