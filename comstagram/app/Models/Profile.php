@@ -19,4 +19,9 @@ class Profile extends Model
         $imagePath = ($this->image) ? $this->image : 'profile/No_image_available.svg.png';
         return '/storage/' .  $imagePath;
     }
+
+    public function followers()
+    {
+        return $this->belongsToMany(User::class);
+    }
 }

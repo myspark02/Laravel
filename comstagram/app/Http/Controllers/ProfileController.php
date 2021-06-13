@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\User;
+use Illuminate\Support\Facades\Cache;
 use Intervention\Image\Facades\Image;
 
 class ProfileController extends Controller
@@ -15,7 +16,34 @@ class ProfileController extends Controller
     public function index(User $user)
     {
         // dd($user);
-        return view('profile.index', ['user' => $user]);
+        $follows = auth()->user()->following->contains($user->profile);
+
+        // dd($follows);
+        // $postCount = $user->posts->count();
+        $postCount = Cache::remember(
+            'count.posts.' . $user->id,
+            now()->addSeconds(30),
+            function () use ($user) {
+                return $user->posts->count();
+            }
+        );
+        // $followersCount = $user->profile->followers->count();
+        $followersCount = Cache::remember(
+            'count.followers.' . $user->id,
+            now()->addSeconds(30),
+            function () use ($user) {
+                return $user->profile->followers->count();
+            }
+        );
+        // $followingCount = $user->following->count();
+        $followingCount = Cache::remember(
+            'count.following.' . $user->id,
+            now()->addSeconds(30),
+            function () use ($user) {
+                return $user->following->count();
+            }
+        );
+        return view('profile.index', compact('user', 'follows', 'postCount', 'followersCount', 'followingCount'));
     }
 
     public function edit(User $user)

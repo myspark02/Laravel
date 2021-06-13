@@ -12,8 +12,8 @@
             </div>
             <div>
                 <div class="py-5 grid grid-cols-2 flex items-baseline">
-                    <div class="text-3xl">
-                        <h1>{{ $user->username }}</h1>
+                    <div class="text-3xl flex">
+                        <h1 class="mr-5">{{ $user->username }}</h1>
                     </div>
                     <div class="ml-5">
                         <a href="{{ route('post.create') }}" class="mr-10">Add new post</a>
@@ -22,8 +22,8 @@
                 </div>
                 <div class="flex">
                     <div class="pr-5"><strong>{{ $user->posts->count() }}</strong> posts</div>
-                    <div class="pr-5"><strong>23k</strong> followers</div>
-                    <div class="pr-5"><strong>212</strong> following</div>
+                    <div class="pr-5"><strong>{{$user->profile->followers->count()}}</strong> followers</div>
+                    <div class="pr-5"><strong>{{$user->following->count()}}</strong> following</div>
                 </div>
                 <div>
                     <div class="mt-3 font-bold">{{ $user->profile->title ?? 'No title' }}</div>

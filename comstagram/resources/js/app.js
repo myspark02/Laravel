@@ -2,11 +2,26 @@ require('./bootstrap');
 
 require('alpinejs');
 
-window.Vue = require('vue');
+// window.Vue = require('vue');
 
+// const app = new Vue({
+//     el : '#app', 
+// });
 
-Vue.component('follow-button', require('./components/FlollowButton.vue').default);
+import Vue from "vue";
+// import FollowButton from './components/FollowButton.vue'
 
+Vue.component('follow-button', require('./components/FollowButton.vue').default);
 const app = new Vue({
+    el:'#app',
+})
 
-});
+// const app = new Vue({
+//     render : h => h(FollowButton)
+// }).$mount("#follow");
+
+
+// const app = Vue.createApp({})
+
+// app.component('follow-button', require('./components/FollowButton.vue').default);
+// app.mount('#app');

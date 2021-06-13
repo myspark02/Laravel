@@ -12,6 +12,18 @@ class PostController extends Controller
     {
         $this->middleware(['auth']);
     }
+
+    public function index()
+    {
+        $users = auth()->user()->following()->pluck('profiles.user_id');
+        // dd($users);
+        // $posts = Post::whereIn('user_id', $users)->latest()->get();
+        $posts = Post::whereIn('user_id', $users)->latest()->with('user')->paginate(5);
+        // dd($posts);
+
+        return view('post.index', compact('posts'));
+    }
+
     public function create()
     {
         return view('post.create');
@@ -39,7 +51,8 @@ class PostController extends Controller
             'image' => $imagePath,
 
         ]);
-        return view('profile.index', ['user' => $request->user()]);
+        // return view('profile.index', ['user' => $request->user()]);
+        return redirect('/profile/' . auth()->user()->id);
     }
 
     public function show(Post $post)

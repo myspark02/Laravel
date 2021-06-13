@@ -6,16 +6,24 @@
     </x-slot>
 
     <div class="container mx-auto px-4">
-        <div class="grid grid-flow-col auto-cols-max">
+        <div class="grid grid-flow-col auto-cols-max items-center">
             <div class="p-10">
                 <img src="{{ $user->profile->profileImage() }}" class="rounded-full h-40 w-40"
                     alt="comstagram main image">
-            </div>
-            <div>
+            </div> 
+            <div id="app">
                 <div class="py-5 grid grid-cols-2 flex items-center">
                     <div class="text-3xl flex align-baseline">
                         <h1 class="mr-10">{{ $user->username }}</h1>
-                        <x-follow-button />
+                        <!--x-follow-button/-->
+                        <!--
+                        <div id="follow">
+                        </div>                         
+                        -->
+                        
+                        <follow-button user-id="{{$user->id}}" follows="{{$follows }}">
+                        </follow-button>
+                        
                     </div>
                     <div class="ml-5">
                         @can('update', $user->profile)
@@ -27,9 +35,9 @@
                     </div>
                 </div>
                 <div class="flex">
-                    <div class="pr-5"><strong>{{ $user->posts->count() }}</strong> posts</div>
-                    <div class="pr-5"><strong>23k</strong> followers</div>
-                    <div class="pr-5"><strong>212</strong> following</div>
+                    <div class="pr-5"><strong>{{ $postCount }}</strong> posts</div>
+                    <div class="pr-5"><strong>{{$followersCount}}</strong> followers</div>
+                    <div class="pr-5"><strong>{{$followingCount}}</strong> following</div>
                 </div>
                 <div>
                     <div class="mt-3 font-bold">{{ $user->profile->title }}</div>

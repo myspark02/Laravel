@@ -1,8 +1,9 @@
 <?php
 
+use App\Http\Controllers\FollowController;
 use App\Http\Controllers\PostController;
 use App\Http\Controllers\ProfileController;
-use Illuminate\Support\Facades\Auth;
+use App\Mail\NewUserWelcomeMail;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -16,10 +17,6 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::get('/', function () {
-    return view('welcome');
-});
-
 Route::get('/dashboard', function () {
     return view('dashboard', ['user' => Auth::user()]);
 })->middleware(['auth'])->name('dashboard');
@@ -32,7 +29,14 @@ Route::get('/profile/{user}/edit', [ProfileController::class, 'edit'])
 Route::patch('/profile/{user}', [ProfileController::class, 'update'])
     ->name('profile.update');
 
+Route::get('/', [PostController::class, 'index'])->name('post.index');
 Route::get('/p', [PostController::class, 'create'])->name('post.create');
 Route::post('/p', [PostController::class, 'store'])->name('post.store');
 Route::get('/p/{post}', [PostController::class, 'show'])->name('post.show');
+Route::post('/follow/{user}', [FollowController::class, 'store'])->name('follow.store');
+
+Route::get('/email', function () {
+    return new NewUserWelcomeMail(auth()->user());
+})->middleware(['auth']);
+
 require __DIR__ . '/auth.php';
