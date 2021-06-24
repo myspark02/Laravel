@@ -23,9 +23,11 @@ Route::get('/dashboard', function () {
 
 
 Route::get('/profile/{user}', [ProfileController::class, 'index'])
-    ->name('profile.index');
+    ->name('profile.index')/*->middleware('verified')*/;
+
 Route::get('/profile/{user}/edit', [ProfileController::class, 'edit'])
     ->name('profile.edit');
+
 Route::patch('/profile/{user}', [ProfileController::class, 'update'])
     ->name('profile.update');
 
