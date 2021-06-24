@@ -3,7 +3,9 @@
 use App\Http\Controllers\FollowController;
 use App\Http\Controllers\PostController;
 use App\Http\Controllers\ProfileController;
+use App\Http\Resources\UserResource;
 use App\Mail\NewUserWelcomeMail;
+use App\Models\User;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -40,5 +42,20 @@ Route::post('/follow/{user}', [FollowController::class, 'store'])->name('follow.
 Route::get('/email', function () {
     return new NewUserWelcomeMail(auth()->user());
 })->middleware(['auth']);
+
+Route::get('/user/{id}', function ($id) {
+    // return User::findOrFail($id);
+    return new UserResource(User::findOrFail($id));
+});
+
+Route::get('/users', function () {
+    // return User::all();
+    return User::with('posts')->get();
+    // return UserResource::collection(User::all());
+});
+
+Route::get('/testphp', function () {
+    return view('test.index');
+});
 
 require __DIR__ . '/auth.php';
