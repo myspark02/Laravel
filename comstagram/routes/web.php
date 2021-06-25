@@ -1,5 +1,6 @@
 <?php
 
+use App\Events\UserViewed;
 use App\Http\Controllers\FollowController;
 use App\Http\Controllers\PostController;
 use App\Http\Controllers\ProfileController;
@@ -45,6 +46,7 @@ Route::get('/email', function () {
 
 Route::get('/user/{id}', function ($id) {
     // return User::findOrFail($id);
+    UserViewed::dispatch(User::findOrFail($id));
     return new UserResource(User::findOrFail($id));
 });
 
