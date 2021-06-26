@@ -33,6 +33,6 @@ class UserViewedNotification
     public function handle(UserViewed $event)
     {
         $user = $event->user;
-        Log::info("sombody viewed $user->username info!");
+        Log::info("Sombody viewed $user->username info!");
     }
 }

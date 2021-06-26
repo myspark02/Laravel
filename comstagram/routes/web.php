@@ -60,4 +60,13 @@ Route::get('/testphp', function () {
     return view('test.index');
 });
 
+Route::get('/listenForUserViewEvent', function () {
+    return view('broadcast.listen');
+});
+
+
+Route::post('/broadcasting/auth', function () {
+    return true;
+});
+
 require __DIR__ . '/auth.php';

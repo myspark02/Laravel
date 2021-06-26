@@ -10,12 +10,14 @@ use Illuminate\Broadcasting\PrivateChannel;
 use Illuminate\Contracts\Broadcasting\ShouldBroadcast;
 use Illuminate\Foundation\Events\Dispatchable;
 use Illuminate\Queue\SerializesModels;
+use Illuminate\Support\Facades\Auth;
 
-class UserViewed
+class UserViewed implements ShouldBroadcast
 {
     use Dispatchable, InteractsWithSockets, SerializesModels;
 
     public $user;
+    public $message;
 
     /**
      * Create a new event instance.
@@ -25,6 +27,9 @@ class UserViewed
     public function __construct(User $user)
     {
         $this->user = $user;
+        $msg = Auth::user() ? Auth::user()->username : 'Somebody ';
+
+        $this->message = $msg . "viewed " . $user->username . " info";
     }
 
     /**
@@ -34,6 +39,13 @@ class UserViewed
      */
     public function broadcastOn()
     {
-        return new PrivateChannel('channel-name');
+        $id = Auth::user()->id;
+        return new PrivateChannel("user." . $id);
+        // return new PrivateChannel("yju-wdj-laravel");
+    }
+
+    public function broadcastAs()
+    {
+        return 'user.viewed';
     }
 }

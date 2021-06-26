@@ -12,6 +12,8 @@ import Vue from "vue";
 // import FollowButton from './components/FollowButton.vue'
 
 Vue.component('follow-button', require('./components/FollowButton.vue').default);
+Vue.component('channel-msg', require('./components/ChannelMsg.vue').default);
+
 const app = new Vue({
     el:'#app',
 })

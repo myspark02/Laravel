@@ -5,10 +5,10 @@
         </h2>
     </x-slot>
 
-    <div class="container mx-auto px-40 items-center">
+    <div class="container mx-auto px-40 items-center" id="app">
         @foreach ($posts as $post)
             <div class="mt-5 py-4">
-                <a href="{{ route('profile.index', $post->user->id) }}"> 
+                <a href="{{ route('profile.index', $post->user->id) }}">
                     <img src="/storage/{{ $post->image }}" class="w-48 md:w-auto">
                 </a>
                 <p>
@@ -19,7 +19,7 @@
             </div>
         @endforeach
         <div class="my-20 justify-center">
-            <div> {{$posts->links()}}</div>
+            <div> {{ $posts->links() }}</div>
         </div>
     </div>
 </x-app-layout>
