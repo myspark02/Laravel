@@ -7,7 +7,7 @@
 
     <div class="py-12">
 
-        <form action="{{ route('posts.update', ['post'=>$post->id]) }}" method="post">
+        <form action="{{ route('posts.update', ['post'=>$post->id]) }}" method="post" enctype="multipart/form-data">
         @csrf
         @method('PATCH')
             <div class="m-10 flex justify-between w-3/12">
@@ -36,6 +36,12 @@
                         </div>
                     @enderror
                 </div>
+            </div>
+            <div class="ml-10 flex justify-between w-3/12">
+                <div>Cover Image: </div>
+                    <div class="w-6/12">
+                        <input type="file" name="cover_image" class="form-file">
+                    </div>
             </div>
 
             <div class="ml-10">

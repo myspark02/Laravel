@@ -1,12 +1,13 @@
 <x-guest-layout>
     <div class="m-20 justify-items-center">
         <a href="{{ route('posts.index') }}"> Go Back</a>
+        <img src="/storage/cover_images/{{ $post->cover_image() }}" style="width:40%">
         <div>{{ $post->title }}</div>
         <div>
             {!! $post->body !!}
         </div>
         <hr>
-        <div>Written on {{ $post->created_at }}</div>
+        <div>Written by {{ $post->user->name }} on {{ $post->created_at }}</div>
         <hr>
         <div class="flex mt-5 flex-row">
             @auth

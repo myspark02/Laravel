@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Post;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Storage;
 
 class PostsController extends Controller
 {
@@ -55,12 +56,33 @@ class PostsController extends Controller
     {
         $this->validate($request,
             ['title' => 'required',
-            'body' => 'required']);
+            'body' => 'required',
+            'cover_image' => 'nullable|image|max:9999']);
+
+            // Handle File Upload
+            $fileNameToStore = null;
+
+            if ($request->hasFile('cover_image')) {
+                $fileNameWithExt = $request->file('cover_image')->getClientOriginalName();
+
+                // file name without extension
+                $fileName = pathinfo($fileNameWithExt, PATHINFO_FILENAME);
+
+                // file name extension
+                $extension = $request->file('cover_image')->getClientOriginalExtension();
+
+                // file name to store
+                $fileNameToStore = $fileName.'_'.time().'.'.$extension;
+
+                // upload image
+                $path = $request->file('cover_image')->storeAs('public/cover_images', $fileNameToStore);
+            }
 
             $post = new Post;
             $post->title = $request->input('title');
             $post->body = $request->input('body');
             $post->user_id = auth()->user()->id;
+            $post->cover_image = $fileNameToStore;
             $post->save();
 
             return redirect()->route('posts.index')->with('success', 'Post Created');
@@ -91,7 +113,7 @@ class PostsController extends Controller
         $post = Post::findOrFail($id);
 
 
-        if ($request->user()->cannot('edit', $post)) {
+        if ($request->user()->cannot('update', $post)) {
             return redirect()->route('posts.index')->with('error', 'You are not authorized to edit this post');
         }
 
@@ -112,13 +134,38 @@ class PostsController extends Controller
     {
         $this->validate($request,
         ['title' => 'required',
-        'body' => 'required']);
+        'body' => 'required',
+        'cover_image' => 'nullable|image|max:9999'
+        ]);
 
         $post =  Post::findOrFail($id);
 
         if ($request->user()->cannot('update', $post)) {
             return redirect()->route('posts.index')->with('error', 'You are not authorized to update this post');
         }
+
+         // Handle File Upload
+         $fileNameToStore = null;
+
+         if ($request->hasFile('cover_image')) {
+             $fileNameWithExt = $request->file('cover_image')->getClientOriginalName();
+
+             // file name without extension
+             $fileName = pathinfo($fileNameWithExt, PATHINFO_FILENAME);
+
+             // file name extension
+             $extension = $request->file('cover_image')->getClientOriginalExtension();
+
+             // file name to store
+             $fileNameToStore = $fileName.'_'.time().'.'.$extension;
+
+             // upload image
+             $path = $request->file('cover_image')->storeAs('public/cover_images', $fileNameToStore);
+
+             Storage::delete('public/cover_images/'.$post->cover_image);
+
+             $post->cover_image = $fileNameToStore;
+         }
 
         $post->title = $request->input('title');
         $post->body = $request->input('body');
@@ -141,6 +188,9 @@ class PostsController extends Controller
 
         if ($request->user()->cannot('delete', $post)) {
             return redirect()->route('posts.index')->with('error', 'You are not authorized to delete this post');
+        }
+        if ($post->cover_image) {
+            Storage::delete('public/cover_images/'.$post->cover_image);
         }
 
         $post->delete();

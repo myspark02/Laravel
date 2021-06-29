@@ -12,4 +12,9 @@ class Post extends Model
     public function user() {
         return $this->belongsTo(User::class);
     }
+
+    public function cover_image() {
+        return $this->cover_image ? $this->cover_image: 'no_img_available.png';
+    }
+
 }

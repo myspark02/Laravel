@@ -11,7 +11,8 @@
                 <div class="p-6 bg-white border-b border-gray-200">
                     @if (count($posts) > 0)
                         @foreach ($posts as $post)
-                            <div class=" border-gray-400 my-4 px-10">
+                            <div class=" border-gray-400 my-10 px-10">
+                                <img src="/storage/cover_images/{{ $post->cover_image() }}" style="width:20%">
                                 <a href="{{ route('posts.show', [$post->id]) }}">
                                     <span class="text-2xl"> {{ $post->title }} </span>
                                 </a>
