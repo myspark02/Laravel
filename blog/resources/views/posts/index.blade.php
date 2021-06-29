@@ -8,6 +8,14 @@
             </div>
         @endif
 
+        @if(session('error'))
+            <div class="m-10">
+                <span class="text-red-500">
+                    {{ session('error') }}
+                </span>
+            </div>
+         @endif
+
         @if (count($posts) > 0)
             @foreach ($posts as $post)
                 <div class=" border-gray-400 my-4 px-10">

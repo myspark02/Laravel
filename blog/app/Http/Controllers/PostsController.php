@@ -8,6 +8,10 @@ use Illuminate\Support\Facades\DB;
 
 class PostsController extends Controller
 {
+
+    public function __construct() {
+        $this->middleware(['auth'])->except(['show', 'index']);
+    }
     /**
      * Display a listing of the resource.
      *
@@ -81,9 +85,18 @@ class PostsController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function edit($id)
+    public function edit(Request $request, $id)
     {
+
         $post = Post::findOrFail($id);
+
+
+        if ($request->user()->cannot('edit', $post)) {
+            return redirect()->route('posts.index')->with('error', 'You are not authorized to edit this post');
+        }
+
+        // $this->authorize('edit', $post);
+
 
         return view('posts.edit')->with('post', $post);
     }
@@ -102,6 +115,11 @@ class PostsController extends Controller
         'body' => 'required']);
 
         $post =  Post::findOrFail($id);
+
+        if ($request->user()->cannot('update', $post)) {
+            return redirect()->route('posts.index')->with('error', 'You are not authorized to update this post');
+        }
+
         $post->title = $request->input('title');
         $post->body = $request->input('body');
 
@@ -117,9 +135,13 @@ class PostsController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id)
+    public function destroy(Request $request, $id)
     {
         $post = Post::findOrFail($id);
+
+        if ($request->user()->cannot('delete', $post)) {
+            return redirect()->route('posts.index')->with('error', 'You are not authorized to delete this post');
+        }
 
         $post->delete();
 
