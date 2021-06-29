@@ -6,12 +6,6 @@ use Illuminate\View\Component;
 
 class GuestLayout extends Component
 {
-    public $services;
-
-    public function __construct($services = [])
-    {
-        $this->services = $services;
-    }
     /**
      * Get the view / contents that represents the component.
      *

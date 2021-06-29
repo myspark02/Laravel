@@ -9,7 +9,18 @@
         <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
             <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg">
                 <div class="p-6 bg-white border-b border-gray-200">
-                    You're logged in!
+                    @if (count($posts) > 0)
+                        @foreach ($posts as $post)
+                            <div class=" border-gray-400 my-4 px-10">
+                                <a href="{{ route('posts.show', [$post->id]) }}">
+                                    <span class="text-2xl"> {{ $post->title }} </span>
+                                </a>
+                                <span class="block text-sm"> Written on {{ $post->created_at }}</span>
+                            </div>
+                        @endforeach
+                @else
+                    <p> No posts found </p>
+                @endif
                 </div>
             </div>
         </div>
