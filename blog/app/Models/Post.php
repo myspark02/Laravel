@@ -17,4 +17,8 @@ class Post extends Model
         return $this->cover_image ? $this->cover_image: 'no_img_available.png';
     }
 
+    public function comments() {
+        return $this->hasMany(Comment::class);
+    }
+
 }

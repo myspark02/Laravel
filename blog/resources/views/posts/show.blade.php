@@ -26,6 +26,8 @@
             @endauth
         </div>
 
-
+        <div id="app">
+            <comment-list :comments="{{ $post->comments }}"/>
+        </div>
     </div>
 </x-guest-layout>

@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\CommentsController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\PagesController;
 use App\Http\Controllers\PostsController;
@@ -33,6 +34,7 @@ Route::get('/services', [PagesController::class, 'services']);
 
 Route::resource('/posts', PostsController::class);
 
+Route::resource('/post/comments', CommentsController::class)->except(['create', 'show', 'edit']);
 
 Route::any('/{anyUrl}', function () {
     return view('welcome');
