@@ -2,9 +2,14 @@
 
 namespace App\Http\Controllers;
 
+use App\Jobs\ProcessPost;
+use App\Mail\NewPostMail;
 use App\Models\Post;
+use App\Providers\PostCreated;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Storage;
 
 class PostsController extends Controller
@@ -84,6 +89,21 @@ class PostsController extends Controller
             $post->user_id = auth()->user()->id;
             $post->cover_image = $fileNameToStore;
             $post->save();
+
+            // PostCreated::dispatch(auth()->user());
+            // dd(auth()->user());
+            // ProcessPost::dispatch(Auth::user());  // job dispatch
+            ProcessPost::dispatchIf(Auth::user()->posts->count() == 1, Auth::user());
+
+            // ProcessPost::dispatch(Auth::user())->delay(now()->addMinutes(10));
+
+            // ProcessPost::dispatchAfterResponse(Auth::user());
+
+            // dispatch(function() {
+            //     Mail::to(Auth::user()->email)->send(new NewPostMail());
+            // })->afterResponse();
+
+            // ProcessPost::dispatchSync(Auth::user());
 
             return redirect()->route('posts.index')->with('success', 'Post Created');
     }

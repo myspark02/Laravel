@@ -36,6 +36,10 @@ Route::resource('/posts', PostsController::class);
 
 Route::resource('/post/comments', CommentsController::class)->except(['create', 'show', 'edit']);
 
+Route::get('/chart', function() {
+    return view('charts.index', ['labels'=>['A', 'B', 'C', 'D'], 'data'=>[7, 4, 9, 2]]);
+});
+
 Route::any('/{anyUrl}', function () {
     return view('welcome');
 });
