@@ -27,7 +27,7 @@
         </div>
 
         <div id="app">
-            <comment-list :post-id="{{ $post->id }}"  />
+            <comment-list :post-id="{{ $post->id }}" :login-id="{{ auth()->user() ?  auth()->user()->id : -1}}"  />
         </div>
     </div>
 </x-guest-layout>

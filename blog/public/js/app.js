@@ -3811,9 +3811,22 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
-  props: ['comment'],
-  setup: function setup() {}
+  props: ['comment', 'loginId'],
+  setup: function setup() {},
+  computed: {
+    canDelete: function canDelete() {
+      return this.comment.user_id == this.loginId;
+    }
+  },
+  methods: {
+    remove: function remove() {
+      console.log('remove cliked...');
+    }
+  }
 });
 
 /***/ }),
@@ -3837,13 +3850,20 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
-  props: ['postId'],
+  props: ['postId', 'loginId'],
   data: function data() {
     return {
       title: 'title',
       content: 'content'
     };
+  },
+  computed: {
+    displayForm: function displayForm() {
+      return this.loginId != -1;
+    }
   },
   methods: {
     register: function register() {
@@ -3885,10 +3905,13 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
 
 
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
-  props: ['postId'],
+  props: ['postId', 'loginId'],
   setup: function setup() {},
   components: {
     comment: _Comment_vue__WEBPACK_IMPORTED_MODULE_0__.default,
@@ -3906,6 +3929,7 @@ __webpack_require__.r(__webpack_exports__);
       axios.get('/posts/' + this.postId + '/comments').then(function (response) {
         console.log(response.data); // alert(response.data);
 
+        _this.comments = [];
         _this.comments = response.data;
       })["catch"](function (error) {
         console.log(error);
@@ -21631,7 +21655,15 @@ var render = function() {
     _vm._v(" "),
     _c("span", [_vm._v(" Content :  " + _vm._s(_vm.comment.content) + " ")]),
     _vm._v(" "),
-    _c("span", [_vm._v(" Written  on " + _vm._s(_vm.comment.created_at) + " ")])
+    _c("span", [
+      _vm._v(" Written  on " + _vm._s(_vm.comment.created_at) + " ")
+    ]),
+    _vm._v(" "),
+    _vm.canDelete
+      ? _c("div", [
+          _c("button", { on: { click: _vm.remove } }, [_vm._v(" delete")])
+        ])
+      : _vm._e()
   ])
 }
 var staticRenderFns = []
@@ -21658,53 +21690,57 @@ var render = function() {
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
   return _c("div", { staticClass: "my-10" }, [
-    _c("span", [_vm._v(" Title :")]),
-    _vm._v(" "),
-    _c("input", {
-      directives: [
-        {
-          name: "model",
-          rawName: "v-model",
-          value: _vm.title,
-          expression: "title"
-        }
-      ],
-      attrs: { type: "text", placeholder: "title" },
-      domProps: { value: _vm.title },
-      on: {
-        input: function($event) {
-          if ($event.target.composing) {
-            return
-          }
-          _vm.title = $event.target.value
-        }
-      }
-    }),
-    _vm._v(" "),
-    _c("span", [_vm._v(" Content : ")]),
-    _vm._v(" "),
-    _c("textarea", {
-      directives: [
-        {
-          name: "model",
-          rawName: "v-model",
-          value: _vm.content,
-          expression: "content"
-        }
-      ],
-      attrs: { id: "content" },
-      domProps: { value: _vm.content },
-      on: {
-        input: function($event) {
-          if ($event.target.composing) {
-            return
-          }
-          _vm.content = $event.target.value
-        }
-      }
-    }),
-    _vm._v(" "),
-    _c("button", { on: { click: _vm.register } }, [_vm._v("등록")])
+    _vm.displayForm
+      ? _c("div", [
+          _c("span", [_vm._v(" Title :")]),
+          _vm._v(" "),
+          _c("input", {
+            directives: [
+              {
+                name: "model",
+                rawName: "v-model",
+                value: _vm.title,
+                expression: "title"
+              }
+            ],
+            attrs: { type: "text", placeholder: "title" },
+            domProps: { value: _vm.title },
+            on: {
+              input: function($event) {
+                if ($event.target.composing) {
+                  return
+                }
+                _vm.title = $event.target.value
+              }
+            }
+          }),
+          _vm._v(" "),
+          _c("span", [_vm._v(" Content : ")]),
+          _vm._v(" "),
+          _c("textarea", {
+            directives: [
+              {
+                name: "model",
+                rawName: "v-model",
+                value: _vm.content,
+                expression: "content"
+              }
+            ],
+            attrs: { id: "content" },
+            domProps: { value: _vm.content },
+            on: {
+              input: function($event) {
+                if ($event.target.composing) {
+                  return
+                }
+                _vm.content = $event.target.value
+              }
+            }
+          }),
+          _vm._v(" "),
+          _c("button", { on: { click: _vm.register } }, [_vm._v("등록")])
+        ])
+      : _vm._e()
   ])
 }
 var staticRenderFns = []
@@ -21733,13 +21769,19 @@ var render = function() {
   return _c(
     "div",
     [
-      _c("commentForm", { attrs: { "post-id": _vm.postId } }),
+      _c("commentForm", {
+        attrs: { "login-id": _vm.loginId, "post-id": _vm.postId },
+        on: { registered: _vm.reloadPosts }
+      }),
+      _vm._v(" "),
+      _c("button", { on: { click: _vm.reloadPosts } }, [
+        _vm._v("댓글리스트 새로 고침")
+      ]),
       _vm._v(" "),
       _vm._l(_vm.comments, function(comment, index) {
         return _c("comment", {
           key: index,
-          attrs: { comment: comment },
-          on: { registered: _vm.reloadPosts }
+          attrs: { comment: comment, "login-id": _vm.loginId }
         })
       })
     ],
