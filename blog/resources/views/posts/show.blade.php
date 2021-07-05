@@ -27,7 +27,7 @@
         </div>
 
         <div id="app">
-            <comment-list :comments="{{ $post->comments }}"/>
+            <comment-list :post-id="{{ $post->id }}"  />
         </div>
     </div>
 </x-guest-layout>

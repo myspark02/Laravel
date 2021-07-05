@@ -34,7 +34,8 @@ Route::get('/services', [PagesController::class, 'services']);
 
 Route::resource('/posts', PostsController::class);
 
-Route::resource('/post/comments', CommentsController::class)->except(['create', 'show', 'edit']);
+Route::post('/posts/{post}/comments', [CommentsController::class, 'store']);
+Route::get('/posts/{post}/comments', [CommentsController::class, 'index']);
 
 Route::get('/chart', function() {
     return view('charts.index', ['labels'=>['A', 'B', 'C', 'D'], 'data'=>[7, 4, 9, 2]]);

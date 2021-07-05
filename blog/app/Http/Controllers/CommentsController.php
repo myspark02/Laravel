@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Comment;
 use App\Models\Post;
 use Illuminate\Http\Request;
 
@@ -12,9 +13,8 @@ class CommentsController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index($id)
+    public function index(Post $post)
     {
-        $post = Post::with('user')->find($id)->get();
         return $post->comments;
     }
 
@@ -34,14 +34,24 @@ class CommentsController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(Request $request, $post_id)
     {
-        return auth()->user()->comments->create(
-            [
-                'title' => $request->title,
-                'content' => $request->content,
-            ]
-        );
+        // dd($post_id);
+        // return auth()->user()->comments->create(
+        //     [
+        //         'title' => $request->title,
+        //         'content' => $request->content,
+        //         'post_id' => $post_id,
+        //     ]
+        // );
+
+        $comment = new Comment();
+        $comment->title = $request->title;
+        $comment->content = $request->content;
+        $comment->post_id = $post_id;
+        $comment->user_id = auth()->user()->id;
+        $comment->save();
+        return $comment;
     }
 
     /**
