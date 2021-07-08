@@ -2,7 +2,7 @@
     <div class="m-20 justify-items-center">
         <a href="{{ route('posts.index') }}"> Go Back</a>
         <img src="/storage/cover_images/{{ $post->cover_image() }}" style="width:40%">
-        <div>{{ $post->title }}</div>
+        <div>{{ $post->title }} viewd {{ $post->users->count() }} {{ Str::plural('time', $post->users->count()) }}</div>
         <div>
             {!! $post->body !!}
         </div>

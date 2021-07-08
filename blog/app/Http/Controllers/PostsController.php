@@ -118,6 +118,12 @@ class PostsController extends Controller
     {
         //
         $post = Post::findOrFail($id);
+        // $post->count++;
+        // $post->save();
+        if ($post->users->contains(auth()->user()) == false) {
+            $post->users()->attach(auth()->user()->id);
+            $post->refresh();
+        }
         return view('posts.show')->with('post', $post);
     }
 
