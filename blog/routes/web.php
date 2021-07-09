@@ -23,7 +23,7 @@ Route::get('/', function () {
 
 Route::get('/dashboard', [DashboardController::class, 'index'])->middleware(['auth'])->name('dashboard');
 
-require __DIR__.'/auth.php';
+require __DIR__ . '/auth.php';
 
 
 Route::get('/', [PagesController::class, 'index']);
@@ -37,11 +37,18 @@ Route::resource('/posts', PostsController::class);
 Route::post('/posts/{post}/comments', [CommentsController::class, 'store']);
 Route::get('/posts/{post}/comments', [CommentsController::class, 'index']);
 
-Route::get('/chart', function() {
-    return view('charts.index', ['labels'=>['A', 'B', 'C', 'D'], 'data'=>[7, 4, 9, 2]]);
+Route::get('/chart', function () {
+    return view('charts.index', ['labels' => ['A', 'B', 'C', 'D'], 'data' => [7, 4, 9, 2]]);
+});
+
+Route::get('/vues/index', function () {
+    return view('testvue.index');
+});
+
+Route::get('/vues/githubprofiles', function () {
+    return view('testvue.github_profiles');
 });
 
 Route::any('/{anyUrl}', function () {
     return view('welcome');
 });
-
