@@ -2,9 +2,11 @@
 
 use App\Http\Controllers\CommentsController;
 use App\Http\Controllers\DashboardController;
+use App\Http\Controllers\GithubAuthController;
 use App\Http\Controllers\PagesController;
 use App\Http\Controllers\PostsController;
 use Illuminate\Support\Facades\Route;
+
 
 /*
 |--------------------------------------------------------------------------
@@ -48,6 +50,10 @@ Route::get('/vues/index', function () {
 Route::get('/vues/githubprofiles', function () {
     return view('testvue.github_profiles');
 });
+
+Route::get('/social/github', [GithubAuthController::class, 'redirect'])->middleware('guest')->name('github.login');
+
+Route::get('/social/github/callback', [GithubAuthController::class, 'callback'])->middleware('guest');
 
 Route::any('/{anyUrl}', function () {
     return view('welcome');
