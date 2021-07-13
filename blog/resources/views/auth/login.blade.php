@@ -58,5 +58,8 @@
         <div class="mt-4">
             <a id="github" class="block mt-1 w-full" href="{{ route('github.login') }}"> Signin with Github </a>
         </div>
+        <div class="mt-4">
+            <a id="github" class="block mt-1 w-full" href="{{ route('kakao.login') }}"> Signin with Kakao </a>
+        </div>
     </x-auth-card>
 </x-guest-layout>
