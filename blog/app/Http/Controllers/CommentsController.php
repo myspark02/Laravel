@@ -8,6 +8,11 @@ use Illuminate\Http\Request;
 
 class CommentsController extends Controller
 {
+
+    public function __construct()
+    {
+        $this->middleware(['auth']);
+    }
     /**
      * Display a listing of the resource.
      *
@@ -96,6 +101,7 @@ class CommentsController extends Controller
      */
     public function destroy($id)
     {
-        return Post::find($id)->delete();
+        // return Post::find($id)->delete();
+        return Comment::find($id)->delete();
     }
 }

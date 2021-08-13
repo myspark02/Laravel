@@ -24,6 +24,14 @@ export default ({
     methods : {
         remove() {
             console.log('remove cliked...')
+            axios.delete('/posts/comments/delete/'+this.comment.id)
+                .then(response => {
+                    console.log(response.data)
+                    this.$emit('registered')
+                    this.$emit('registered')
+                }).catch(error => {
+                    console.log(error);
+                })
         },
     }
 })

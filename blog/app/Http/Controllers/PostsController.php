@@ -15,8 +15,9 @@ use Illuminate\Support\Facades\Storage;
 class PostsController extends Controller
 {
 
-    public function __construct() {
-        $this->middleware(['auth'])->except(['show', 'index']);
+    public function __construct()
+    {
+        $this->middleware(['auth'])->except(['index']);
     }
     /**
      * Display a listing of the resource.
@@ -59,53 +60,57 @@ class PostsController extends Controller
      */
     public function store(Request $request)
     {
-        $this->validate($request,
-            ['title' => 'required',
-            'body' => 'required',
-            'cover_image' => 'nullable|image|max:9999']);
+        $this->validate(
+            $request,
+            [
+                'title' => 'required',
+                'body' => 'required',
+                'cover_image' => 'nullable|image|max:9999'
+            ]
+        );
 
-            // Handle File Upload
-            $fileNameToStore = null;
+        // Handle File Upload
+        $fileNameToStore = null;
 
-            if ($request->hasFile('cover_image')) {
-                $fileNameWithExt = $request->file('cover_image')->getClientOriginalName();
+        if ($request->hasFile('cover_image')) {
+            $fileNameWithExt = $request->file('cover_image')->getClientOriginalName();
 
-                // file name without extension
-                $fileName = pathinfo($fileNameWithExt, PATHINFO_FILENAME);
+            // file name without extension
+            $fileName = pathinfo($fileNameWithExt, PATHINFO_FILENAME);
 
-                // file name extension
-                $extension = $request->file('cover_image')->getClientOriginalExtension();
+            // file name extension
+            $extension = $request->file('cover_image')->getClientOriginalExtension();
 
-                // file name to store
-                $fileNameToStore = $fileName.'_'.time().'.'.$extension;
+            // file name to store
+            $fileNameToStore = $fileName . '_' . time() . '.' . $extension;
 
-                // upload image
-                $path = $request->file('cover_image')->storeAs('public/cover_images', $fileNameToStore);
-            }
+            // upload image
+            $path = $request->file('cover_image')->storeAs('public/cover_images', $fileNameToStore);
+        }
 
-            $post = new Post;
-            $post->title = $request->input('title');
-            $post->body = $request->input('body');
-            $post->user_id = auth()->user()->id;
-            $post->cover_image = $fileNameToStore;
-            $post->save();
+        $post = new Post;
+        $post->title = $request->input('title');
+        $post->body = $request->input('body');
+        $post->user_id = auth()->user()->id;
+        $post->cover_image = $fileNameToStore;
+        $post->save();
 
-            // PostCreated::dispatch(auth()->user());
-            // dd(auth()->user());
-            // ProcessPost::dispatch(Auth::user());  // job dispatch
-            ProcessPost::dispatchIf(Auth::user()->posts->count() == 1, Auth::user());
+        // PostCreated::dispatch(auth()->user());
+        // dd(auth()->user());
+        // ProcessPost::dispatch(Auth::user());  // job dispatch
+        ProcessPost::dispatchIf(Auth::user()->posts->count() == 1, Auth::user());
 
-            // ProcessPost::dispatch(Auth::user())->delay(now()->addMinutes(10));
+        // ProcessPost::dispatch(Auth::user())->delay(now()->addMinutes(10));
 
-            // ProcessPost::dispatchAfterResponse(Auth::user());
+        // ProcessPost::dispatchAfterResponse(Auth::user());
 
-            // dispatch(function() {
-            //     Mail::to(Auth::user()->email)->send(new NewPostMail());
-            // })->afterResponse();
+        // dispatch(function() {
+        //     Mail::to(Auth::user()->email)->send(new NewPostMail());
+        // })->afterResponse();
 
-            // ProcessPost::dispatchSync(Auth::user());
+        // ProcessPost::dispatchSync(Auth::user());
 
-            return redirect()->route('posts.index')->with('success', 'Post Created');
+        return redirect()->route('posts.index')->with('success', 'Post Created');
     }
 
     /**
@@ -158,11 +163,14 @@ class PostsController extends Controller
      */
     public function update(Request $request, $id)
     {
-        $this->validate($request,
-        ['title' => 'required',
-        'body' => 'required',
-        'cover_image' => 'nullable|image|max:9999'
-        ]);
+        $this->validate(
+            $request,
+            [
+                'title' => 'required',
+                'body' => 'required',
+                'cover_image' => 'nullable|image|max:9999'
+            ]
+        );
 
         $post =  Post::findOrFail($id);
 
@@ -170,28 +178,28 @@ class PostsController extends Controller
             return redirect()->route('posts.index')->with('error', 'You are not authorized to update this post');
         }
 
-         // Handle File Upload
-         $fileNameToStore = null;
+        // Handle File Upload
+        $fileNameToStore = null;
 
-         if ($request->hasFile('cover_image')) {
-             $fileNameWithExt = $request->file('cover_image')->getClientOriginalName();
+        if ($request->hasFile('cover_image')) {
+            $fileNameWithExt = $request->file('cover_image')->getClientOriginalName();
 
-             // file name without extension
-             $fileName = pathinfo($fileNameWithExt, PATHINFO_FILENAME);
+            // file name without extension
+            $fileName = pathinfo($fileNameWithExt, PATHINFO_FILENAME);
 
-             // file name extension
-             $extension = $request->file('cover_image')->getClientOriginalExtension();
+            // file name extension
+            $extension = $request->file('cover_image')->getClientOriginalExtension();
 
-             // file name to store
-             $fileNameToStore = $fileName.'_'.time().'.'.$extension;
+            // file name to store
+            $fileNameToStore = $fileName . '_' . time() . '.' . $extension;
 
-             // upload image
-             $path = $request->file('cover_image')->storeAs('public/cover_images', $fileNameToStore);
+            // upload image
+            $path = $request->file('cover_image')->storeAs('public/cover_images', $fileNameToStore);
 
-             Storage::delete('public/cover_images/'.$post->cover_image);
+            Storage::delete('public/cover_images/' . $post->cover_image);
 
-             $post->cover_image = $fileNameToStore;
-         }
+            $post->cover_image = $fileNameToStore;
+        }
 
         $post->title = $request->input('title');
         $post->body = $request->input('body');
@@ -199,7 +207,6 @@ class PostsController extends Controller
         $post->save();
 
         return redirect()->route('posts.index')->with('success', 'Post Updated!!!');
-
     }
 
     /**
@@ -216,7 +223,7 @@ class PostsController extends Controller
             return redirect()->route('posts.index')->with('error', 'You are not authorized to delete this post');
         }
         if ($post->cover_image) {
-            Storage::delete('public/cover_images/'.$post->cover_image);
+            Storage::delete('public/cover_images/' . $post->cover_image);
         }
 
         $post->delete();

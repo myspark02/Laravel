@@ -39,6 +39,7 @@ Route::resource('/posts', PostsController::class);
 
 Route::post('/posts/{post}/comments', [CommentsController::class, 'store']);
 Route::get('/posts/{post}/comments', [CommentsController::class, 'index']);
+Route::delete('/posts/comments/delete/{id}', [CommentsController::class, 'destroy']);
 
 Route::get('/chart', function () {
     return view('charts.index', ['labels' => ['A', 'B', 'C', 'D'], 'data' => [7, 4, 9, 2]]);

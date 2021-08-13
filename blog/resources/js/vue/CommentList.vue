@@ -4,7 +4,7 @@
            <commentForm :login-id="loginId" :post-id="postId" @registered="reloadPosts"/>
 
            <button v-on:click="reloadPosts">댓글리스트 새로 고침</button>
-           <comment  v-for="(comment, index) in comments" v-bind:key="index" v-bind:comment="comment"  :login-id="loginId"/>
+           <comment  v-for="(comment, index) in comments" v-bind:key="index" v-bind:comment="comment"  :login-id="loginId" @registered="reloadPosts"/>
     </div>
 </template>
 

@@ -3824,7 +3824,18 @@ __webpack_require__.r(__webpack_exports__);
   },
   methods: {
     remove: function remove() {
+      var _this = this;
+
       console.log('remove cliked...');
+      axios["delete"]('/posts/comments/delete/' + this.comment.id).then(function (response) {
+        console.log(response.data);
+
+        _this.$emit('registered');
+
+        _this.$emit('registered');
+      })["catch"](function (error) {
+        console.log(error);
+      });
     }
   }
 });
@@ -21781,7 +21792,8 @@ var render = function() {
       _vm._l(_vm.comments, function(comment, index) {
         return _c("comment", {
           key: index,
-          attrs: { comment: comment, "login-id": _vm.loginId }
+          attrs: { comment: comment, "login-id": _vm.loginId },
+          on: { registered: _vm.reloadPosts }
         })
       })
     ],
