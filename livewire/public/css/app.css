@@ -1283,6 +1283,9 @@ select {
 .w-7\/12 {
 	width: 58.333333%;
 }
+.w-5\/12 {
+	width: 41.666667%;
+}
 .min-w-0 {
 	min-width: 0px;
 }
@@ -1525,6 +1528,10 @@ select {
 .bg-blue-500 {
 	--tw-bg-opacity: 1;
 	background-color: rgba(59, 130, 246, var(--tw-bg-opacity));
+}
+.bg-green-400 {
+	--tw-bg-opacity: 1;
+	background-color: rgba(52, 211, 153, var(--tw-bg-opacity));
 }
 .bg-opacity-25 {
 	--tw-bg-opacity: 0.25;
