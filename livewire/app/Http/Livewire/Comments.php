@@ -10,10 +10,12 @@ use Intervention\Image\ImageManagerStatic;
 use Livewire\Component;
 use Livewire\WithPagination;
 use Illuminate\Support\Str;
+use Livewire\WithFileUploads;
 
 class Comments extends Component
 {
     use WithPagination;
+    // use WithFileUploads;
     // protected $paginationTheme = 'bootstrap';
 
     // public $comments ;  // Livewire에서 collection 타입은 public 프로퍼티로 사용할 수 없다.
@@ -21,6 +23,8 @@ class Comments extends Component
     public $newComment;
     public $image;
     public $ticketId;
+    // public $imagePath;
+
 
     protected $listeners = [
         'fileUpload' => 'handleFileUpload',
@@ -44,6 +48,12 @@ class Comments extends Component
     //     $this->comments = $comments;
     // }
 
+    // public function updatedImage($image)
+    // {
+    //     // dd($image);
+    //     // dd(Storage::url($image));
+    //     $this->imagePath = Storage::url($image->path());
+    // }
     public function addComment()
     {
         if (!auth()->user()) {
@@ -52,10 +62,11 @@ class Comments extends Component
 
         $this->validate(['newComment' => 'required|max:255']);
 
-        $image = $this->storeImage();
+        $imageFileName = $this->storeImage();
+
         $comment = Comment::create([
             'body' => $this->newComment,
-            'image' => $image,
+            'image' => $imageFileName,
             'user_id' => auth()->user()->id,
             'support_ticket_id' => $this->ticketId,
         ]);
@@ -74,9 +85,11 @@ class Comments extends Component
         if (!$this->image) return null;
 
         $img = ImageManagerStatic::make($this->image)->encode('jpg');
-        $name = '/images/' . Str::random() . '.jpg';
+        $name =  'images/' . Str::random() . '.jpg';
 
         Storage::disk('public')->put($name, $img);
+
+        // $this->image->storeAs('public/images', $name);
 
         return $name;
     }

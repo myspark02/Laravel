@@ -14,6 +14,7 @@
             <img src={{ $image }} width="200" />
         @endif
         <input type="file" id="image" wire:change="$emit('fileChosen')">
+        {{-- <input type="file" wire:model="image"> --}}
     </section>
 
     <form class="flex my-4" wire:submit.prevent="addComment">
@@ -28,11 +29,13 @@
             <div class="flex justify-between my-2">
                 <div class="flex">
                     <p class="text-lg font-bold">{{ $comment->writer->name }}</p>
-                    <p class="py-1 mx-3 text-xs font-semibold text-gray-500">{{ $comment->created_at->diffForHumans() }}
+                    <p class="py-1 mx-3 text-xs font-semibold text-gray-500">
+                        {{ $comment->created_at->diffForHumans() }}
                     </p>
                 </div>
                 {{-- <i  wire:click="remove({{ $comment->id }})" class="text-red-200 cursor-pointer fa fa-times hover:text-red-600" aria-hidden="true"></i> --}}
-                <i  wire:click="$emit('deleteClicked', {{ $comment->id }})" class="text-red-200 cursor-pointer fa fa-times hover:text-red-600" aria-hidden="true"></i>
+                <i wire:click="$emit('deleteClicked', {{ $comment->id }})"
+                    class="text-red-200 cursor-pointer fa fa-times hover:text-red-600" aria-hidden="true"></i>
             </div>
             <p class="text-gray-800">{{ $comment->body }}</p>
             @if ($comment->image)
