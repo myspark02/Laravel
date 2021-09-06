@@ -21,6 +21,6 @@ class Comment extends Model
 
     public function getImagePathAttribute()
     {
-        return  Storage::url($this->image);
+        return  'storage/images/'.$this->image;
     }
 }

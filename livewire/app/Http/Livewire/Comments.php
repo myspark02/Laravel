@@ -12,10 +12,12 @@ use Livewire\WithPagination;
 use Illuminate\Support\Str;
 use Livewire\WithFileUploads;
 
+use function PHPUnit\Framework\isEmpty;
+
 class Comments extends Component
 {
     use WithPagination;
-    // use WithFileUploads;
+    use WithFileUploads;
     // protected $paginationTheme = 'bootstrap';
 
     // public $comments ;  // Livewire에서 collection 타입은 public 프로퍼티로 사용할 수 없다.
@@ -37,23 +39,35 @@ class Comments extends Component
         $this->ticketId = $ticketId;
     }
 
-    public function handleFileUpload($imageData)
-    {
-        // dd($imageData);
-        $this->image = $imageData;
-    }
+    // public function handleFileUpload($imageData)
+    // {
+    //     // dd($imageData);
+    //     $this->image = $imageData;
+    // }
 
     // public function mount($comments)
     // {
     //     $this->comments = $comments;
     // }
 
-    // public function updatedImage($image)
-    // {
-    //     // dd($image);
-    //     // dd(Storage::url($image));
-    //     $this->imagePath = Storage::url($image->path());
-    // }
+
+    public function downloadImage(Comment $comment) {
+        return Storage::disk('public')->download('images/'. $comment->image);
+    }
+
+    public function updatedImage($image)
+    {
+        $validated = $this->validate(['image' => 'image']);
+        if($this->getErrorBag()->get('image')) {
+            $this->image = null;
+        }
+
+        // if (isEmpty($validated)) $this->image = null;
+
+        // dd($image);
+        // dd(Storage::url($image));
+        // $this->imagePath = Storage::url($image->path());
+    }
     public function addComment()
     {
         if (!auth()->user()) {
@@ -85,11 +99,11 @@ class Comments extends Component
         if (!$this->image) return null;
 
         $img = ImageManagerStatic::make($this->image)->encode('jpg');
-        $name =  'images/' . Str::random() . '.jpg';
+        $name =  Str::random() . '.jpg';
 
-        Storage::disk('public')->put($name, $img);
+        // Storage::disk('public')->put($name, $img);
 
-        // $this->image->storeAs('public/images', $name);
+        $this->image->storeAs('public/images', $name);
 
         return $name;
     }
@@ -98,7 +112,7 @@ class Comments extends Component
     {
         $comment = Comment::find($id);
 
-        Storage::disk('public')->delete($comment->image);
+        Storage::disk('public')->delete('images/'.$comment->image);
 
         $comment->delete();
 
@@ -116,6 +130,7 @@ class Comments extends Component
     public function render()
     {
         // return view('livewire.comments', ['comments'=>Comment::latest()->paginate(2)]);
+
         return view('livewire.comments', ['comments' => Comment::where('support_ticket_id', $this->ticketId)->latest()->paginate(2)]);
     }
 }
