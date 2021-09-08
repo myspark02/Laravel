@@ -27,6 +27,10 @@ class Comments extends Component
     public $ticketId;
     // public $imagePath;
 
+    protected $rules = [
+        'image' => 'image'
+    ];
+
 
     protected $listeners = [
         'fileUpload' => 'handleFileUpload',
@@ -37,6 +41,11 @@ class Comments extends Component
 
     public function updateComment() {
 
+    }
+
+    public function updated($propertyName)
+    {
+        $this->validateOnly($propertyName);
     }
 
     public function ticketSelected($ticketId)
