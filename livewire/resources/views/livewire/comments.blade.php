@@ -43,6 +43,10 @@
                 {{-- <i  wire:click="remove({{ $comment->id }})" class="text-red-200 cursor-pointer fa fa-times hover:text-red-600" aria-hidden="true"></i> --}}
                 <i wire:click="$emit('deleteClicked', {{ $comment->id }})"
                     class="text-red-200 cursor-pointer fa fa-times hover:text-red-600" aria-hidden="true"></i>
+
+                <i wire:click='$emit("openModal", "edit-comment", {{ json_encode(["commentId"=>$comment->id]) }})'
+                    class="text-red-200 cursor-pointer fa fa-pencil fa-fw hover:text-red-600" aria-hidden="true"></i>
+
             </div>
             <p class="text-gray-800">{{ $comment->body }}</p>
             @if ($comment->image)

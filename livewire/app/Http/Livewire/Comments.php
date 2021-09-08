@@ -31,8 +31,13 @@ class Comments extends Component
     protected $listeners = [
         'fileUpload' => 'handleFileUpload',
         'delete' => 'remove',
-        'ticketSelected' => 'ticketSelected'
+        'ticketSelected' => 'ticketSelected',
+        'update' => 'updateComment',
     ];
+
+    public function updateComment() {
+
+    }
 
     public function ticketSelected($ticketId)
     {
