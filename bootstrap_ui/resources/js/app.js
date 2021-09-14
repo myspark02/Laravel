@@ -5,35 +5,20 @@
  */
 
 require('./bootstrap');
- 
-window.Vue = require('vue').default;
 
-/**
- * The following block of code may be used to automatically register your
- * Vue components. It will recursively scan this directory for the Vue
- * components and automatically register them with their "basename".
- *
- * Eg. ./components/ExampleComponent.vue -> <example-component></example-component>
- */
+import Vue from 'vue';
+import App from './vue/app';
 
-// const files = require.context('./', true, /\.vue$/i)
-// files.keys().map(key => Vue.component(key.split('/').pop().split('.')[0], files(key).default))
+import { library } from '@fortawesome/fontawesome-svg-core'
+import { faPlusSquare, faTrash } from '@fortawesome/free-solid-svg-icons'
+import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome'
 
-// Vue.component('example-component', require('./components/ExampleComponent.vue').default);
-Vue.component('broadcast-listener', require('./components/BroadCastListener.vue').default);
+library.add(faPlusSquare, faTrash)
+
+Vue.component('font-awesome-icon', FontAwesomeIcon)
 
 
-/**
- * Next, we will create a fresh Vue application instance and attach it to
- * the page. Then, you may begin adding components to this application
- * or customize the JavaScript scaffolding to fit your unique needs.
- */
-
-const app = new Vue({
-    el: '#app',
-});
-
-window.Echo.private('message-channel')
-.listen('Message', (e) => {
-    console.log(e.message);
+const app = new Vue( {
+    el : '#app',
+    components: {App}
 });
