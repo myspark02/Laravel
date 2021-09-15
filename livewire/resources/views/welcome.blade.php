@@ -12,12 +12,16 @@
                     You are now offline.
                 </div>
                 {{-- @livewire('counter') --}}
-                <div class="flex w-10/12 my-10">
-                    <div class="w-5/12 px-2 border rounded">
+                <div class="flex my-10 w-12/12">
+                    <div class="w-3/12 px-2 ml-2 border rounded">
+                        @livewire('user-list')
+                    </div>
+
+                    <div class="w-4/12 px-2 border rounded">
                         @livewire('tickets')
                     </div>
 
-                    <div class="w-7/12 p-2 mx-2 border rounded">
+                    <div class="w-5/12 p-2 mx-2 border rounded">
                         @livewire('comments')
                     </div>
                 </div>

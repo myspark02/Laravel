@@ -13,16 +13,19 @@
         @if ($image)
             <img src={{ $image->temporaryUrl() }} width="200" />
         @endif
-        {{-- <input type="file" id="image" wire:change="$emit('fileChosen')"> --}}
-        <input type="file" wire:model="image" wire:loading.attr="disabled">
-        <div wire:loading wire:target="image">Uploading...</div>
-        @error('image')
-        <div class="text-red-700">
-         <span class="text-red-700">{{ $message }}</span>
-        </div>
-        @enderror
+        @if ($ticketId)
+            {{-- <input type="file" id="image" wire:change="$emit('fileChosen')"> --}}
+            <input type="file" wire:model="image" wire:loading.attr="disabled">
+            <div wire:loading wire:target="image">Uploading...</div>
+            @error('image')
+            <div class="text-red-700">
+            <span class="text-red-700">{{ $message }}</span>
+            </div>
+            @enderror
+        @endif
     </section>
 
+    @if ($ticketId)
     <form class="flex my-4" wire:submit.prevent="addComment">
         <span wire:dirty wire:target="newComment">Updating...</span>
         <input wire:model.lazy="newComment" type="text" class="w-full p-2 my-2 mr-2 border rounded shadow"
@@ -31,6 +34,7 @@
             <button wire:offline.attr='disabled' class="w-20 p-2 text-white bg-blue-500 rounded shadow">Add</button>
         </div>
     </form>
+    @endif
     @foreach ($comments as $comment)
         <div class="p-3 my-2 border rounded shadow">
             <div class="flex justify-between my-2">
