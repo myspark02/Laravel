@@ -1,6 +1,8 @@
 <?php
 
+use App\Http\Controllers\GithubAuthController;
 use App\Models\Comment;
+use App\Models\User;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -24,3 +26,16 @@ Route::get('/', function () {
 Route::middleware(['auth:sanctum', 'verified'])->get('/dashboard', function () {
     return view('dashboard');
 })->name('dashboard');
+
+
+Route::get('/github', [GithubAuthController::class, 'redirect'])->name('github.login')->middleware(['guest']);
+Route::get('/github/callback', [GithubAuthController::class, 'callback']);
+
+Route::get('/users', function() {
+    return view('users');
+})->name('users');
+
+
+Route::get('/github_users', function() {
+    return User::select('name')->get();
+});
