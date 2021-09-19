@@ -3,13 +3,20 @@
 namespace App\Http\Livewire;
 
 use App\Models\SupportTicket;
+use Illuminate\Support\Facades\Auth;
 use Livewire\Component;
 
 class Tickets extends Component
 {
     public $active;
 
-    protected $listeners = ['ticketSelected'];
+    public $userId ;
+    protected $listeners = ['ticketSelected', 'userSelected'];
+
+    public function userSelected($userId) {
+        $this->userId = $userId;
+        $this->emit('ticketSelected', null);
+    }
 
 
     public function ticketSelected($ticketId)
@@ -19,6 +26,10 @@ class Tickets extends Component
 
     public function render()
     {
-        return view('livewire.tickets', ['tickets' => SupportTicket::all()]);
+        if(!$this->userId) {
+            $this->userId = Auth::user()->id;
+        }
+
+        return view('livewire.tickets', ['tickets' => SupportTicket::whereUserId($this->userId)->latest()->paginate(5)]);
     }
 }

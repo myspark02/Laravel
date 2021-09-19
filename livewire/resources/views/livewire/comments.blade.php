@@ -13,17 +13,27 @@
         @if ($image)
             <img src={{ $image }} width="200" />
         @endif
-        <input type="file" id="image" wire:change="$emit('fileChosen')">
-        {{-- <input type="file" wire:model="image"> --}}
+        @if ($ticketId)
+            {{-- <input type="file" id="image" wire:change="$emit('fileChosen')"> --}}
+            <input type="file" wire:model="image" wire:loading.attr="disabled">
+            <div wire:loading wire:target="image">Uploading...</div>
+            @error('image')
+                <div class="text-red-700">
+                    <span class="text-red-700">{{ $message }}</span>
+                </div>
+            @enderror
+        @endif
     </section>
 
-    <form class="flex my-4" wire:submit.prevent="addComment">
-        <input wire:model.lazy="newComment" type="text" class="w-full p-2 my-2 mr-2 border rounded shadow"
-            placeholder="What's in your mind.">
-        <div class="py-2">
-            <button class="w-20 p-2 text-white bg-blue-500 rounded shadow">Add</button>
-        </div>
-    </form>
+    @if ($ticketId)
+        <form class="flex my-4" wire:submit.prevent="addComment">
+            <input wire:model.lazy="newComment" type="text" class="w-full p-2 my-2 mr-2 border rounded shadow"
+                placeholder="What's in your mind.">
+            <div class="py-2">
+                <button class="w-20 p-2 text-white bg-blue-500 rounded shadow">Add</button>
+            </div>
+        </form>
+    @endif
     @foreach ($comments as $comment)
         <div class="p-3 my-2 border rounded shadow">
             <div class="flex justify-between my-2">
@@ -37,7 +47,7 @@
                 <i wire:click="$emit('deleteClicked', {{ $comment->id }})"
                     class="text-red-200 cursor-pointer fa fa-times hover:text-red-600" aria-hidden="true"></i>
 
-                <i wire:click='$emit("openModal", "edit-comment", {{ json_encode(["commentId"=>$comment->id]) }})'
+                <i wire:click='$emit("openModal", "edit-comment", {{ json_encode(['commentId' => $comment->id]) }})'
                     class="text-red-200 cursor-pointer fa fa-pencil fa-fw hover:text-red-600" aria-hidden="true"></i>
 
             </div>
