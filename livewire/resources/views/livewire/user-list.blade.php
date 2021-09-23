@@ -19,8 +19,9 @@
             @endif --}}
         </div>
     @endforeach
-
-    {{ $users->links() }}
+    <div class="w-3/12 px-2 ml-2 border rounded">
+    {{ $users->onEachSide(3)->links() }}
+    </div>
 </div>
 
 <script>

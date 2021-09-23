@@ -5,9 +5,11 @@ namespace App\Http\Livewire;
 use App\Models\User;
 use Illuminate\Support\Facades\Auth;
 use Livewire\Component;
+use Livewire\WithPagination;
 
 class UserList extends Component
 {
+    use WithPagination;
     protected $users = '';
     public $active = null;
 
