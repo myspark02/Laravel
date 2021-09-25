@@ -1,6 +1,6 @@
 <template>
-        <div class="flex justify-between ui cards">
-            <github-user-card v-for="(member, index) in members" v-bind:key="index" :username="member.name"/>
+        <div class="ui cards">
+                <github-user-card v-for="(member, index) in members" v-bind:key="index" :username="member.name"/>
         </div>
 </template>
 

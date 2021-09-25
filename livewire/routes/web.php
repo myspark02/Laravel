@@ -37,5 +37,5 @@ Route::get('/users', function() {
 
 
 Route::get('/github_users', function() {
-    return User::select('name')->get();
+    return User::select('name')->where('oauth', 'github')->get();
 });

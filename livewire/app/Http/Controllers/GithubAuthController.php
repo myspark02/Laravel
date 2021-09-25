@@ -30,6 +30,7 @@ class GithubAuthController extends Controller
                 'name' => $user->nickname,
                 'password' => Hash::make(Str::random(24)),
                 'profile_photo_path' => $user->avatar,
+                'oauth' => 'github',
             ]
         );
 
