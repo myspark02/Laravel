@@ -27,7 +27,18 @@ class User extends Authenticatable
         'name',
         'email',
         'password',
+        'username',
     ];
+
+    public function posts() {
+        return $this->hasMany(Post::class)->latest();
+    }
+
+    protected $with = ['profile'];
+
+    public function profile() {
+        return $this->hasOne(Profile::class);
+    }
 
     /**
      * The attributes that should be hidden for serialization.
@@ -58,4 +69,5 @@ class User extends Authenticatable
     protected $appends = [
         'profile_photo_url',
     ];
+
 }
