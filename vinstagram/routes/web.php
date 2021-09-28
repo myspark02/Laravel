@@ -42,3 +42,7 @@ Route::middleware(['auth:sanctum', 'verified'])->get('/profile/{name}', [Profile
 Route::middleware(['auth:sanctum', 'verified'])
 ->post('/post/store', [PostsController::class, "store"])
 ->name('post.store');
+
+Route::middleware(['auth:sanctum', 'verified'])
+->patch('/profile/update', [ProfilesController::class, "update"])
+->name('profile.update');

@@ -1313,6 +1313,9 @@ select {
 	width: -moz-max-content;
 	width: max-content;
 }
+.w-screen {
+	width: 100vw;
+}
 .min-w-0 {
 	min-width: 0px;
 }

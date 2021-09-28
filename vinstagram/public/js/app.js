@@ -20585,7 +20585,12 @@ __webpack_require__.r(__webpack_exports__);
       }),
       createNewPost: false,
       imagePreview: null,
-      editProfile: false
+      editProfile: false,
+      updateProfileForm: this.$inertia.form({
+        _method: 'PATCH',
+        title: '',
+        description: ''
+      })
     };
   },
   methods: {
@@ -20624,6 +20629,24 @@ __webpack_require__.r(__webpack_exports__);
     },
     selectNewImage: function selectNewImage() {
       this.$refs.image.click();
+    },
+    clearUpdateProfileFields: function clearUpdateProfileFields() {
+      this.updateProfileForm.title = '';
+      this.updateProfileForm.description = '';
+      this.editProfile = false;
+    },
+    updateProfile: function updateProfile() {
+      var _this3 = this;
+
+      this.updateProfileForm.description = this.user.profile.description;
+      this.updateProfileForm.title = this.user.profile.title;
+      this.updateProfileForm.post(route('profile.update'), {
+        errorBag: 'updateProfile',
+        preserveScroll: true,
+        onSuccess: function onSuccess() {
+          _this3.clearUpdateProfileFields();
+        }
+      });
     }
   }
 }));
@@ -24475,6 +24498,17 @@ var _hoisted_24 = ["value"];
 
 var _hoisted_25 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createTextVNode)(" Create ");
 
+var _hoisted_26 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createTextVNode)(" Update Profile ");
+
+var _hoisted_27 = {
+  "class": "mb-2"
+};
+var _hoisted_28 = {
+  "class": "mb-2"
+};
+
+var _hoisted_29 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createTextVNode)(" Update Profile ");
+
 function render(_ctx, _cache, $props, $setup, $data, $options) {
   var _component_jet_secondary_button = (0,vue__WEBPACK_IMPORTED_MODULE_0__.resolveComponent)("jet-secondary-button");
 
@@ -24503,7 +24537,7 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
       , _hoisted_3)])) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_4, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_5, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("h2", _hoisted_6, (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)(_ctx.user.name), 1
       /* TEXT */
       ), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)(" <Link :href=\"route('post.create')\"> "), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)(_component_jet_secondary_button, {
-        "class": "mb-4",
+        "class": "mb-4 ml-4",
         onClick: _cache[0] || (_cache[0] = function ($event) {
           return _ctx.createNewPost = true;
         })
@@ -24515,7 +24549,7 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
         /* STABLE */
 
       }), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)(_component_jet_secondary_button, {
-        "class": "mb-4",
+        "class": "mb-4 ml-4",
         onClick: _cache[1] || (_cache[1] = function ($event) {
           return _ctx.editProfile = true;
         })
@@ -24635,7 +24669,86 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
 
           }, 8
           /* PROPS */
-          , ["onClick"]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)(" <jet-danger-button class=\"ml-2\" @click.native=\"deleteTeam\" :class=\"{ 'opacity-25': form.processing }\" :disabled=\"form.processing\">\n                Delete Account\n            </jet-danger-button> ")];
+          , ["onClick"])];
+        }),
+        _: 1
+        /* STABLE */
+
+      }, 8
+      /* PROPS */
+      , ["show"]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)(_component_jet_dialog_modal, {
+        show: _ctx.editProfile,
+        onClose: _cache[9] || (_cache[9] = function ($event) {
+          return _ctx.editProfile = false;
+        })
+      }, {
+        title: (0,vue__WEBPACK_IMPORTED_MODULE_0__.withCtx)(function () {
+          return [_hoisted_26];
+        }),
+        content: (0,vue__WEBPACK_IMPORTED_MODULE_0__.withCtx)(function () {
+          return [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("form", {
+            onSubmit: _cache[8] || (_cache[8] = (0,vue__WEBPACK_IMPORTED_MODULE_0__.withModifiers)(function () {
+              return _ctx.updateProfile && _ctx.updateProfile.apply(_ctx, arguments);
+            }, ["prevent"]))
+          }, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_27, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)(_component_jet_label, {
+            "for": "title",
+            value: "title"
+          }), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)(_component_jet_input, {
+            id: "title",
+            type: "text",
+            "class": "block w-full mt-1",
+            modelValue: _ctx.user.profile.title,
+            "onUpdate:modelValue": _cache[6] || (_cache[6] = function ($event) {
+              return _ctx.user.profile.title = $event;
+            }),
+            required: "",
+            autofocus: "",
+            autocomplete: "title"
+          }, null, 8
+          /* PROPS */
+          , ["modelValue"]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)(_component_jet_input_error, {
+            message: _ctx.updateProfileForm.errors.title,
+            "class": "mt-2"
+          }, null, 8
+          /* PROPS */
+          , ["message"])]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_28, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)(_component_jet_label, {
+            "for": "description",
+            value: "description"
+          }), (0,vue__WEBPACK_IMPORTED_MODULE_0__.withDirectives)((0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("textarea", {
+            id: "description",
+            cols: "40",
+            rows: "10",
+            "class": "form-textarea",
+            "onUpdate:modelValue": _cache[7] || (_cache[7] = function ($event) {
+              return _ctx.user.profile.description = $event;
+            }),
+            required: "",
+            autofocus: "",
+            autocomplete: "description"
+          }, null, 512
+          /* NEED_PATCH */
+          ), [[vue__WEBPACK_IMPORTED_MODULE_0__.vModelText, _ctx.user.profile.description]]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)(_component_jet_input_error, {
+            message: _ctx.updateProfileForm.errors.description,
+            "class": "mt-2"
+          }, null, 8
+          /* PROPS */
+          , ["message"])])], 32
+          /* HYDRATE_EVENTS */
+          )];
+        }),
+        footer: (0,vue__WEBPACK_IMPORTED_MODULE_0__.withCtx)(function () {
+          return [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)(_component_jet_secondary_button, {
+            onClick: (0,vue__WEBPACK_IMPORTED_MODULE_0__.withModifiers)(_ctx.updateProfile, ["prevent"])
+          }, {
+            "default": (0,vue__WEBPACK_IMPORTED_MODULE_0__.withCtx)(function () {
+              return [_hoisted_29];
+            }),
+            _: 1
+            /* STABLE */
+
+          }, 8
+          /* PROPS */
+          , ["onClick"])];
         }),
         _: 1
         /* STABLE */

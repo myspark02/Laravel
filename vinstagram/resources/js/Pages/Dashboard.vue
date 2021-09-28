@@ -12,8 +12,8 @@
                         {{ user.name }}
                         </h2>
                         <!-- <Link :href="route('post.create')"> -->
-                        <jet-secondary-button class="mb-4" @click="createNewPost=true">Add New Post</jet-secondary-button>
-                        <jet-secondary-button class="mb-4" @click="editProfile=true">Edit Profile</jet-secondary-button>
+                        <jet-secondary-button class="mb-4 ml-4" @click="createNewPost=true">Add New Post</jet-secondary-button>
+                        <jet-secondary-button class="mb-4 ml-4" @click="editProfile=true">Edit Profile</jet-secondary-button>
                         <!-- </Link> -->
                     </div>
                     <div class="flex flex-row mb-4">
@@ -81,10 +81,38 @@
             <jet-secondary-button @click.prevent="submit">
                 Create
             </jet-secondary-button>
+        </template>
+    </jet-dialog-modal>
 
-            <!-- <jet-danger-button class="ml-2" @click.native="deleteTeam" :class="{ 'opacity-25': form.processing }" :disabled="form.processing">
-                Delete Account
-            </jet-danger-button> -->
+    <jet-dialog-modal :show="editProfile" @close="editProfile = false">
+        <template #title>
+            Update Profile
+        </template>
+
+        <template #content>
+            <form @submit.prevent="updateProfile">
+                <div class="mb-2">
+                    <jet-label for="title" value="title" />
+                    <jet-input id="title" type="text" class="block w-full mt-1"
+                        v-model="user.profile.title" required autofocus autocomplete="title" />
+                    <jet-input-error :message="updateProfileForm.errors.title" class="mt-2" />
+                </div>
+
+                <div class="mb-2">
+                    <jet-label for="description" value="description" />
+                    <textarea id="description" cols="40" rows="10" class="form-textarea"
+                        v-model="user.profile.description"
+                        required autofocus autocomplete="description"></textarea>
+                    <jet-input-error :message="updateProfileForm.errors.description" class="mt-2" />
+                </div>
+
+            </form>
+        </template>
+
+        <template #footer>
+            <jet-secondary-button @click.prevent="updateProfile">
+                Update Profile
+            </jet-secondary-button>
         </template>
     </jet-dialog-modal>
 
@@ -126,6 +154,12 @@
                 createNewPost : false,
                 imagePreview: null,
                 editProfile: false,
+
+                updateProfileForm: this.$inertia.form({
+                    _method: 'PATCH',
+                    title: '',
+                    description: '',
+                }),
             }
         },
 
@@ -165,6 +199,22 @@
             selectNewImage() {
                 this.$refs.image.click();
             },
+
+            clearUpdateProfileFields() {
+                this.updateProfileForm.title = '';
+                this.updateProfileForm.description = '';
+                this.editProfile = false;
+            },
+
+            updateProfile() {
+                this.updateProfileForm.description = this.user.profile.description;
+                this.updateProfileForm.title = this.user.profile.title;
+                this.updateProfileForm.post(route('profile.update'), {
+                    errorBag : 'updateProfile',
+                    preserveScroll: true,
+                    onSuccess: () => {this.clearUpdateProfileFields();},
+                })
+            }
         }
     })
 </script>
