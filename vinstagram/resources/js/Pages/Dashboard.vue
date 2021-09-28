@@ -1,18 +1,19 @@
 <template>
     <app-layout title="Dashboard">
         <template #header>
-            <div class="flex flex-row items-start">
+            <div class="flex flex-col items-start md:flex-row">
 
                 <div v-if="$page.props.jetstream.managesProfilePhotos" class="flex-shrink-0 px-40 mr-3" >
                     <img class="object-cover w-40 h-40 rounded-full" :src="$page.props.user.profile_photo_url" :alt="$page.props.user.name" />
                 </div>
-                <div class="flex-col justify-items-start">
+                <div class="flex-col mt-2 justify-items-start">
                     <div class="flex flex-row items-end justify-between">
                         <h2 class="mb-4 text-xl font-semibold leading-tight text-gray-800">
                         {{ user.name }}
                         </h2>
                         <!-- <Link :href="route('post.create')"> -->
                         <jet-secondary-button class="mb-4" @click="createNewPost=true">Add New Post</jet-secondary-button>
+                        <jet-secondary-button class="mb-4" @click="editProfile=true">Edit Profile</jet-secondary-button>
                         <!-- </Link> -->
                     </div>
                     <div class="flex flex-row mb-4">
@@ -124,6 +125,7 @@
                 }),
                 createNewPost : false,
                 imagePreview: null,
+                editProfile: false,
             }
         },
 

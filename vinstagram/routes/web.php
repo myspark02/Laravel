@@ -34,9 +34,9 @@ Route::middleware(['auth:sanctum', 'verified'])->get('/dashboard', function () {
 
 Route::middleware(['auth:sanctum', 'verified'])->get('/profile/{name}', [ProfilesController::class, "index"]);
 
-Route::middleware(['auth:sanctum', 'verified'])
-        ->get('/post/create', [PostsController::class, "create"])
-        ->name('post.create');
+// Route::middleware(['auth:sanctum', 'verified'])
+//         ->get('/post/create', [PostsController::class, "create"])
+//         ->name('post.create');
 
 
 Route::middleware(['auth:sanctum', 'verified'])
