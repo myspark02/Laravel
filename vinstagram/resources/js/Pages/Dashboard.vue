@@ -4,16 +4,18 @@
             <div class="flex flex-col items-start md:flex-row">
 
                 <div v-if="$page.props.jetstream.managesProfilePhotos" class="flex-shrink-0 px-40 mr-3" >
-                    <img class="object-cover w-40 h-40 rounded-full" :src="$page.props.user.profile_photo_url" :alt="$page.props.user.name" />
+                    <img class="object-cover w-40 h-40 rounded-full" :src="$page.props.viewed_user.profile_photo_url" :alt="$page.props.viewed_user.name" />
                 </div>
                 <div class="flex-col mt-2 justify-items-start">
                     <div class="flex flex-row items-end justify-between">
                         <h2 class="mb-4 text-xl font-semibold leading-tight text-gray-800">
-                        {{ user.name }}
+                        {{ viewed_user.name }}
                         </h2>
                         <!-- <Link :href="route('post.create')"> -->
-                        <jet-secondary-button class="mb-4 ml-4" @click="createNewPost=true">Add New Post</jet-secondary-button>
-                        <jet-secondary-button class="mb-4 ml-4" @click="editProfile=true">Edit Profile</jet-secondary-button>
+                        <div v-if="can.create_update==true">
+                            <jet-secondary-button class="mb-4 ml-4" @click="createNewPost=true">Add New Post</jet-secondary-button>
+                            <jet-secondary-button class="mb-4 ml-4" @click="editProfile=true">Edit Profile</jet-secondary-button>
+                        </div>
                         <!-- </Link> -->
                     </div>
                     <div class="flex flex-row mb-4">
@@ -21,9 +23,9 @@
                         <div class="mr-10">팔로워 <span class="font-black">80 </span></div>
                         <div class="mr-10"> 팔로우 <span class="font-black">72</span></div>
                     </div>
-                    <div class="mb-4">{{ user.username }}</div>
-                     <div class="mb-4">{{ user.profile? user.profile.title : 'No Title' }}</div>
-                    <div class="mb-4">{{ user.profile? user.profile.description : 'No Description'}}</div>
+                    <div class="mb-4">{{ viewed_user.username }}</div>
+                     <div class="mb-4">{{ viewed_user.profile? viewed_user.profile.title : 'No Title' }}</div>
+                    <div class="mb-4">{{ viewed_user.profile? viewed_user.profile.description : 'No Description'}}</div>
                 </div>
             </div>
         </template>
@@ -132,7 +134,7 @@
     import JetLabel from '@/Jetstream/Label.vue'
 
     export default defineComponent({
-        props : ['user', 'posts'],
+        props : ['user', 'posts', 'can', 'viewed_user'],
         components: {
             AppLayout,
             PostList,
