@@ -30,13 +30,27 @@ class User extends Authenticatable
         'username',
     ];
 
-    public function posts() {
+    protected static function boot()
+    {
+        parent::boot();
+
+        static::created(function ($user) {
+            $user->profile()->create([
+                'title' => $user->username,
+                'description' => 'No description',
+            ]);
+        });
+    }
+
+    public function posts()
+    {
         return $this->hasMany(Post::class)->latest();
     }
 
     protected $with = ['profile'];
 
-    public function profile() {
+    public function profile()
+    {
         return $this->hasOne(Profile::class);
     }
 
@@ -69,5 +83,4 @@ class User extends Authenticatable
     protected $appends = [
         'profile_photo_url',
     ];
-
 }
