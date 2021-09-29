@@ -35,7 +35,13 @@ class PostsController extends Controller
 
         //
 
-        return Inertia::render('Dashboard', ['user' => auth()->user(), 'posts' => Auth::user()->posts]);
+        return Inertia::render('Dashboard',
+                [
+                'user' => auth()->user(),
+                'posts' => Auth::user()->posts,
+                'can' => true,
+                'viewed_user' => Auth::user(),
+            ]);
 
     }
 }

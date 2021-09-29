@@ -8,9 +8,14 @@
                 </div>
                 <div class="flex-col mt-2 justify-items-start">
                     <div class="flex flex-row items-end justify-between">
-                        <h2 class="mb-4 text-xl font-semibold leading-tight text-gray-800">
-                        {{ viewed_user.name }}
-                        </h2>
+                        <div class="flex flex-row items-end my-4">
+                            <h2 class="text-xl font-semibold leading-tight text-gray-800">
+                            {{ viewed_user.name }}
+                            </h2>
+                            <button class="px-2 mx-4 font-semibold text-blue-700 bg-transparent border border-blue-500 rounded hover:bg-blue-500 hover:text-white hover:border-transparent">
+                                Follow
+                            </button>
+                        </div>
                         <!-- <Link :href="route('post.create')"> -->
                         <div v-if="can.create_update==true">
                             <jet-secondary-button class="mb-4 ml-4" @click="createNewPost=true">Add New Post</jet-secondary-button>
@@ -33,7 +38,7 @@
         <div class="py-12">
             <div class="mx-auto max-w-7xl sm:px-6 lg:px-8">
                 <div class="overflow-hidden bg-white shadow-xl sm:rounded-lg">
-                    <post-list :posts="posts" />
+                    <post-list :posts="posts"  :viewed_user="viewed_user" />
                 </div>
             </div>
         </div>

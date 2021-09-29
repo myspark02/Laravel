@@ -11,6 +11,10 @@ class Post extends Model
 
     protected $fillable = ['caption', 'image', 'user_id'];
 
+    public function getImageAttribute($value) {
+        return '/storage/'.$value;
+    }
+
     public function user() {
         return $this->belongsTo(User::class);
     }
