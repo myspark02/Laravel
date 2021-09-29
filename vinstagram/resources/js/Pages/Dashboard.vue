@@ -12,9 +12,7 @@
                             <h2 class="text-xl font-semibold leading-tight text-gray-800">
                             {{ viewed_user.name }}
                             </h2>
-                            <button class="px-2 mx-4 font-semibold text-blue-700 bg-transparent border border-blue-500 rounded hover:bg-blue-500 hover:text-white hover:border-transparent">
-                                Follow
-                            </button>
+                            <follow-button :user="user" :viewed_user="viewed_user"/>
                         </div>
                         <!-- <Link :href="route('post.create')"> -->
                         <div v-if="can.create_update==true">
@@ -137,6 +135,7 @@
     import JetInput from '@/Jetstream/Input.vue'
     import JetInputError from '@/Jetstream/InputError.vue'
     import JetLabel from '@/Jetstream/Label.vue'
+    import FollowButton from '@/Pages/Instagram/FollowButton.vue';
 
     export default defineComponent({
         props : ['user', 'posts', 'can', 'viewed_user'],
@@ -148,7 +147,8 @@
             JetSecondaryButton,
             JetInput,
             JetInputError,
-            JetLabel
+            JetLabel, 
+            FollowButton, 
         },
 
         data() {

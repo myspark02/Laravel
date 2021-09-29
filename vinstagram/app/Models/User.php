@@ -30,6 +30,13 @@ class User extends Authenticatable
         'username',
     ];
 
+    protected $with = ['profile', 'following'];
+
+    public function following()
+    {
+        return $this->belongsToMany(Profile::class);
+    }
+
     protected static function boot()
     {
         parent::boot();
@@ -46,8 +53,6 @@ class User extends Authenticatable
     {
         return $this->hasMany(Post::class)->latest();
     }
-
-    protected $with = ['profile'];
 
     public function profile()
     {

@@ -10,7 +10,8 @@ use Intervention\Image\Facades\Image;
 
 class PostsController extends Controller
 {
-    public function store(Request $request) {
+    public function store(Request $request)
+    {
         // dd($request->all());
         $data = $request->validate([
             'caption' => 'required',
@@ -29,19 +30,20 @@ class PostsController extends Controller
         $image->save(); // 원본 파일에 덮어쓴다.
 
         auth()->user()->posts()->create([
-            'caption' =>$data['caption'],
+            'caption' => $data['caption'],
             'image' => $imagePath
         ]);
 
         //
 
-        return Inertia::render('Dashboard',
-                [
+        return Inertia::render(
+            'Dashboard',
+            [
                 'user' => auth()->user(),
                 'posts' => Auth::user()->posts,
-                'can' => true,
+                'can' => ['create_update' => true],
                 'viewed_user' => Auth::user(),
-            ]);
-
+            ]
+        );
     }
 }

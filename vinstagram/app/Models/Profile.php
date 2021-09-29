@@ -11,7 +11,16 @@ class Profile extends Model
 
     protected $fillable = ['title', 'description'];
 
-    public function user() {
+    // protected $with = ['user'];
+
+
+    public function followers()
+    {
+        return $this->belongsToMany(User::class);
+    }
+
+    public function user()
+    {
         return $this->belongsTo(User::class);
     }
 }

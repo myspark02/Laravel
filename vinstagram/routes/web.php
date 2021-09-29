@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\FollowsController;
 use App\Http\Controllers\PostsController;
 use App\Http\Controllers\ProfilesController;
 use Illuminate\Foundation\Application;
@@ -54,3 +55,7 @@ Route::middleware(['auth:sanctum', 'verified'])
 Route::middleware(['auth:sanctum', 'verified'])
     ->patch('/profile/update', [ProfilesController::class, "update"])
     ->name('profile.update');
+
+Route::middleware(['auth:sanctum', 'verified'])
+    ->post('/follow/{user}', [FollowsController::class, "store"])
+    ->name('follow.store');
