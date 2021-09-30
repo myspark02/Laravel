@@ -18,7 +18,7 @@ class FollowsController extends Controller
                 'user' => fn () => auth()->user(),
                 'posts' => fn () =>  $user->posts,
                 'can' => ['create_update' => auth()->user()->id == $user->id],
-                'viewed_user' => fn () =>  $user,
+                'viewed_user' =>  $user->refresh(),
                 'followers' => $user->profile->followers->count(),
             ]
         );
