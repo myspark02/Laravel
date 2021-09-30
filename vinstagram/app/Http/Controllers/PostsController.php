@@ -4,12 +4,30 @@ namespace App\Http\Controllers;
 
 use App\Models\Post;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Auth;
 use Inertia\Inertia;
 use Intervention\Image\Facades\Image;
 
 class PostsController extends Controller
 {
+
+    public function index() {
+        // 팔로우 중인 사용자의 아이디만 뽑아내자
+        $users = auth()->user()->following()->pluck('profiles.user_id');
+
+        // select * from posts where user_id in (4, 2);
+        $posts = Post::whereIn('user_id', $users)->with('user')->latest()->paginate(5);
+        // dd($posts);
+
+
+        return Inertia::render('Home', [
+            'user' => Auth::user(),
+            'posts' => $posts,
+        ]);
+
+    }
+
     public function store(Request $request)
     {
         // dd($request->all());
