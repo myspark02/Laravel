@@ -43,6 +43,7 @@ class PostsController extends Controller
                 'posts' => Auth::user()->posts,
                 'can' => ['create_update' => true],
                 'viewed_user' => Auth::user(),
+                'followers' => auth()->user()->profile->followers->count(),
             ]
         );
     }

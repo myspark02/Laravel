@@ -12,7 +12,6 @@ class FollowsController extends Controller
     {
         auth()->user()->following()->toggle($user->profile);
 
-
         return Inertia::render(
             'Dashboard',
             [
@@ -20,6 +19,7 @@ class FollowsController extends Controller
                 'posts' => fn () =>  $user->posts,
                 'can' => ['create_update' => auth()->user()->id == $user->id],
                 'viewed_user' => fn () =>  $user,
+                'followers' => $user->profile->followers->count(),
             ]
         );
     }

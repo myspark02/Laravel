@@ -23,8 +23,8 @@
                     </div>
                     <div class="flex flex-row mb-4">
                         <div class="mr-10">게시시물  <span class="font-black">{{ posts.length }}</span></div>
-                        <div class="mr-10">팔로워 <span class="font-black">80 </span></div>
-                        <div class="mr-10"> 팔로우 <span class="font-black">72</span></div>
+                        <div class="mr-10">팔로워 <span class="font-black">{{ followers}}</span></div>
+                        <div class="mr-10"> 팔로우 <span class="font-black">{{ viewed_user.following.length }}</span></div>
                     </div>
                     <div class="mb-4">{{ viewed_user.username }}</div>
                      <div class="mb-4">{{ viewed_user.profile? viewed_user.profile.title : 'No Title' }}</div>
@@ -138,7 +138,7 @@
     import FollowButton from '@/Pages/Instagram/FollowButton.vue';
 
     export default defineComponent({
-        props : ['user', 'posts', 'can', 'viewed_user'],
+        props : ['user', 'posts', 'can', 'viewed_user', 'followers'],
         components: {
             AppLayout,
             PostList,
@@ -147,8 +147,8 @@
             JetSecondaryButton,
             JetInput,
             JetInputError,
-            JetLabel, 
-            FollowButton, 
+            JetLabel,
+            FollowButton,
         },
 
         data() {

@@ -13,20 +13,20 @@ export default {
         return {
             form: this.$inertia.form({
 
-            }), 
+            }),
             btnText : '',
             contain : false,
         }
-    }, 
+    },
     methods : {
         followUser() {
             // alert(this.user)
             this.form.post('/follow/'+this.viewed_user.id, {
-                preserveScroll: true, 
-                only:['user', 'viewed_user'],
-                onSuccess : () =>  this.changeBtnText(), 
+                preserveScroll: true,
+                only:['user', 'viewed_user', 'followers'],
+                onSuccess : () =>  this.changeBtnText(),
             })
-        }, 
+        },
 
         initBtnText() {
             for (let i = 0; i < this.user.following.length; i++) {
@@ -36,19 +36,19 @@ export default {
                 }
             }
             this.btnText =  this.contain ? '팔로우 취소' : '팔로우 하기';
-        },  
+        },
 
         changeBtnText() {
             this.contain = !this.contain
             this.btnText =  this.contain ? '팔로우 취소' : '팔로우 하기';
         }
-    }, 
+    },
 
     created() {
         this.initBtnText();
     }
 
 
-    
+
 }
 </script>

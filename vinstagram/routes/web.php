@@ -36,6 +36,7 @@ Route::middleware(['auth:sanctum', 'verified'])->get('/dashboard', function () {
             'posts' => Auth::user()->posts,
             'can' => ['create_update' => true],
             'viewed_user' => Auth::user(),
+            'followers' => Auth::user()->profile->followers->count(),
         ]
     );
 })->name('dashboard');

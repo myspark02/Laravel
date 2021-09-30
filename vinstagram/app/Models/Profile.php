@@ -11,7 +11,7 @@ class Profile extends Model
 
     protected $fillable = ['title', 'description'];
 
-    // protected $with = ['user'];
+    // protected $with = ['followers'];
 
 
     public function followers()
