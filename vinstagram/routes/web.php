@@ -8,6 +8,7 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
 
+use App\Mail\NewUserWelcomeMail;
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -62,3 +63,9 @@ Route::middleware(['auth:sanctum', 'verified'])
 Route::middleware(['auth:sanctum', 'verified'])
     ->post('/follow/{user}', [FollowsController::class, "store"])
     ->name('follow.store');
+
+
+// Just for test
+Route::get('/email', function() {
+    return new NewUserWelcomeMail();
+});
