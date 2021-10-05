@@ -36,6 +36,11 @@ class User extends Authenticatable
 
     protected $with = ['profile', 'following'];
 
+    public function likes()
+    {
+        return $this->belongsToMany(Post::class);
+    }
+
     public function following()
     {
         return $this->belongsToMany(Profile::class);

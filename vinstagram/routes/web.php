@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\FollowsController;
+use App\Http\Controllers\LikesController;
 use App\Http\Controllers\PostsController;
 use App\Http\Controllers\ProfilesController;
 use Illuminate\Foundation\Application;
@@ -64,8 +65,16 @@ Route::middleware(['auth:sanctum', 'verified'])
     ->post('/follow/{user}', [FollowsController::class, "store"])
     ->name('follow.store');
 
+Route::middleware(['auth:sanctum', 'verified'])
+    ->post('/like/{post}', [LikesController::class, "store"])
+    ->name('like.store');
+
+Route::middleware(['auth:sanctum', 'verified'])
+    ->get('/like/{post}', [LikesController::class, "show"])
+    ->name('like.show');
+
 
 // Just for test
-Route::get('/email', function() {
+Route::get('/email', function () {
     return new NewUserWelcomeMail();
 });
