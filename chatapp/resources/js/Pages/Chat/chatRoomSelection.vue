@@ -22,7 +22,7 @@ export default {
     props:['rooms', 'currentRoom'],
     data() {
         return {
-            selected:'',
+            selected:{},
         }
     },
     created() {

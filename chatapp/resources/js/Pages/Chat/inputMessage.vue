@@ -17,7 +17,7 @@ export default {
     props: ['room'],
     data() {
         return {
-            message:''
+            message:'',
         }
     },
     methods: {
@@ -30,11 +30,19 @@ export default {
                 if(response.status == 201) {
                     this.message = '';
                     this.$emit('messagesent');
+                    // alert('messagesent')
                 }
             })
             .catch(error => {
                 console.log(error);
             })
+            // this.form.post('/chat/room/' + this.room.id + '/message', {
+            //     preserveScroll: true,
+            //     onSuccess: () => {
+            //         this.form.reset('message');
+            //         this.$emit('messagesent');
+            //     }, 
+            // })
         }
     }
 }
