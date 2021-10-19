@@ -22,7 +22,7 @@
                                 <jet-nav-link :href="route('dashboard')" :active="route().current('dashboard')">
                                     Dashboard
                                 </jet-nav-link>
-                                <jet-nav-link :href="route('chat')" :active="route().current('chat')">
+                                <jet-nav-link :href="route('chat.messages', {'roomId':1})" :active="route().current('chat.messages')">
                                     Chat
                                 </jet-nav-link>
                             </div>
@@ -149,7 +149,7 @@
                             Dashboard
                         </jet-responsive-nav-link>
 
-                        <jet-responsive-nav-link :href="route('chat')" :active="route().current('chat')">
+                        <jet-responsive-nav-link :href="route('chat.messages', {'roomId':1})" :active="route().current('chat.messages')">
                             Chat
                         </jet-responsive-nav-link>
                     </div>
