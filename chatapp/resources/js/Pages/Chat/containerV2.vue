@@ -1,0 +1,143 @@
+<template>
+    <app-layout title="Dashboard">
+        <template #header>
+            <h2 class="text-xl font-semibold leading-tight text-gray-800">
+                <chat-room-selection
+                    v-if="currentRoom.id"
+                    :rooms="chatRooms"
+                    :currentRoom="currentRoom"
+                    v-on:roomChanged="setRoom($event)"/>
+            </h2>
+        </template>
+
+        <div class="py-12">
+            <div class="mx-auto max-w-7xl sm:px-6 lg:px-8">
+                <div class="overflow-hidden bg-white shadow-xl sm:rounded-lg">
+                    <advanced-message-container :messages="messages" :loginUserId="loginUserId" />
+                    <infinite-loading @distance="1" @infinite="infiniteHandler"/>
+                    <input-message :room="currentRoom"
+                                    v-on:messagesent="getMessages()" />
+                </div>
+            </div>
+
+        </div>
+    </app-layout>
+</template>
+
+<script>
+    import { defineComponent } from 'vue'
+    import AppLayout from '@/Layouts/AppLayout.vue'
+
+    import InputMessage from './inputMessage.vue'
+    import ChatRoomSelection from './chatRoomSelection.vue'
+
+    import AdvancedMessageContainer from './messageContainerV2.vue'
+
+    import InfiniteLoading from "vue-infinite-loading";
+
+    export default defineComponent({
+        props :['loginUserId'],
+        components: {
+            AppLayout,
+            InputMessage,
+            ChatRoomSelection,
+            AdvancedMessageContainer,
+            InfiniteLoading,
+        },
+        data() {
+            return {
+                chatRooms : [],
+                currentRoom: {},
+                messages : [],
+                page : 1,
+            }
+        },
+        watch: {
+            currentRoom(val, oldVal) {
+                // alert(oldVal.id);
+                // alert('watch:'+val.id)
+                if (oldVal && oldVal.id) {
+                    this.disconnect(oldVal);
+                }
+                this.connect();
+            }
+        },
+
+        methods : {
+            connect() {
+
+                // alert('connecto to room id : ' + this.myCurrentRoom.id);
+                let vm = this;
+                this.getMessages();
+                 window.Echo.private('chat.' + this.currentRoom.id)
+                               .listen('.message.new', e => {
+                                 vm.getMessages();
+                                    // console.log(this.messages);
+                           })
+            }
+            ,
+            disconnect(room) {
+                // alert('disconnect to room id : ' + room.id);
+                window.Echo.leave('chat.' + room.id);
+            },
+
+            getRooms() {
+                axios.get('/chat/rooms')
+                .then(response=>{
+                    this.chatRooms = response.data;
+                    this.setRoom(response.data[0]);
+                })
+                .catch(error=> {
+                    console.log(error);
+                })
+            },
+
+            setRoom(room) {
+                this.currentRoom = room;
+
+            },
+
+            getMessages() {
+                axios.get('/chat/room/' + this.currentRoom.id + '/messagesV2')
+                .then(response=> {
+                    this.messages = response.data.data;
+                }).catch(error => {
+                    console.log(error);
+                })
+                // alert('getMessages')
+            },
+
+            async infiniteHandler($state) {
+
+                try {
+                    await this.getMessages();
+
+                    if (this.messages.length > 0) {
+                          this.messages.push(...this.messages);
+                          $state.loaded();
+
+                    } else {
+                        $state.complete();
+                    }
+                } catch (error) {
+                    // alert(error);
+                    console.log(error);
+                }
+            },
+
+
+        },
+
+        created() {
+            this.getRooms();
+            // this.messages = this.page_messages;
+            // alert(this.loginUserId);
+            // alert(this.chatRooms[0].name);
+            // alert(this.currentRoom.id)
+            // alert('created')
+            // this.setRoom(this.currentRoom);
+
+        },
+
+    })
+</script>
