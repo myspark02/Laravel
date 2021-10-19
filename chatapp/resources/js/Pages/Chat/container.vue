@@ -31,7 +31,7 @@
     import InputMessage from './inputMessage.vue'
     import ChatRoomSelection from './chatRoomSelection.vue'
 
-    import AdvancedMessageContainer from './messageContainerV2.vue'
+    import AdvancedMessageContainer from './messageContainerV1.vue'
 
     export default defineComponent({
         props :['loginUserId', 'messages', 'chatRooms', 'currentRoom'], 
