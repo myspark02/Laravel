@@ -1,6 +1,6 @@
 <template>
     <div class="grid grid-cols-2">
-        <div class="font-bold text-xl">
+        <div class="text-xl font-bold">
             {{ selected.name }} Chat
         </div>
         <div>
@@ -22,7 +22,7 @@ export default {
     props:['rooms', 'currentRoom'],
     data() {
         return {
-            selected:'',
+            selected:{},
         }
     },
     created() {

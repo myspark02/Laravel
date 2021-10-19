@@ -20765,7 +20765,7 @@ __webpack_require__.r(__webpack_exports__);
   props: ['rooms', 'currentRoom'],
   data: function data() {
     return {
-      selected: ''
+      selected: {}
     };
   },
   created: function created() {
@@ -20806,7 +20806,7 @@ __webpack_require__.r(__webpack_exports__);
   data: function data() {
     return {
       chatRooms: [],
-      currentRoom: '',
+      currentRoom: {},
       messages: []
     };
   },
@@ -20854,7 +20854,8 @@ __webpack_require__.r(__webpack_exports__);
       var _this3 = this;
 
       axios.get('/chat/room/' + this.currentRoom.id + '/messages').then(function (response) {
-        _this3.messages = response.data;
+        // console.log(response.data);
+        _this3.messages = response.data.data;
       })["catch"](function (error) {
         console.log(error);
       });
@@ -24768,7 +24769,7 @@ var _hoisted_1 = {
   "class": "grid grid-cols-2"
 };
 var _hoisted_2 = {
-  "class": "font-bold text-xl"
+  "class": "text-xl font-bold"
 };
 var _hoisted_3 = ["value"];
 function render(_ctx, _cache, $props, $setup, $data, $options) {
@@ -24812,16 +24813,16 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var vue__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! vue */ "./node_modules/vue/dist/vue.esm-bundler.js");
 
 var _hoisted_1 = {
-  "class": "font-semibold text-xl text-gray-800 leading-tight"
+  "class": "text-xl font-semibold leading-tight text-gray-800"
 };
 var _hoisted_2 = {
   "class": "py-12"
 };
 var _hoisted_3 = {
-  "class": "max-w-7xl mx-auto sm:px-6 lg:px-8"
+  "class": "mx-auto max-w-7xl sm:px-6 lg:px-8"
 };
 var _hoisted_4 = {
-  "class": "bg-white overflow-hidden shadow-xl sm:rounded-lg"
+  "class": "overflow-hidden bg-white shadow-xl sm:rounded-lg"
 };
 function render(_ctx, _cache, $props, $setup, $data, $options) {
   var _component_chat_room_selection = (0,vue__WEBPACK_IMPORTED_MODULE_0__.resolveComponent)("chat-room-selection");

@@ -17,8 +17,13 @@ class ChatController extends Controller
 
     public function messages(Request $request, $roomId)
     {
+        // return ChatMessage::where('chat_room_id', $roomId)
+        //                 ->with('user')->latest()->get();
+
+        // dd(ChatMessage::where('chat_room_id', $roomId)
+        // ->with('user')->latest()->paginate(20));
         return ChatMessage::where('chat_room_id', $roomId)
-                        ->with('user')->latest()->get();
+                ->with('user')->latest()->paginate(20);
     }
 
     public function newMessage(Request $request, $roomId)

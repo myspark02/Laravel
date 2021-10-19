@@ -1,7 +1,7 @@
 <template>
     <app-layout title="Dashboard">
         <template #header>
-            <h2 class="font-semibold text-xl text-gray-800 leading-tight">
+            <h2 class="text-xl font-semibold leading-tight text-gray-800">
                 <chat-room-selection
                     v-if="currentRoom.id"
                     :rooms="chatRooms"
@@ -11,8 +11,8 @@
         </template>
 
         <div class="py-12">
-            <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
-                <div class="bg-white overflow-hidden shadow-xl sm:rounded-lg">
+            <div class="mx-auto max-w-7xl sm:px-6 lg:px-8">
+                <div class="overflow-hidden bg-white shadow-xl sm:rounded-lg">
                     <message-container :messages="messages" />
                     <input-message :room="currentRoom"
                                     v-on:messagesent="getMessages()" />
@@ -40,7 +40,7 @@
         data() {
             return {
                 chatRooms : [],
-                currentRoom: '',
+                currentRoom: {},
                 messages : [],
             }
         },
@@ -86,7 +86,8 @@
             getMessages() {
                 axios.get('/chat/room/' + this.currentRoom.id + '/messages')
                 .then(response=> {
-                    this.messages = response.data;
+                    // console.log(response.data);
+                    this.messages = response.data.data;
                 }).catch(error => {
                     console.log(error);
                 })
