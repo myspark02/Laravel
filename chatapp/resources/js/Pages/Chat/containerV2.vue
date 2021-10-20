@@ -13,13 +13,10 @@
         <div class="py-12">
             <div class="mx-auto max-w-7xl sm:px-6 lg:px-8">
                 <div class="overflow-hidden bg-white shadow-xl sm:rounded-lg">
-                    <advanced-message-container :messages="messages" :loginUserId="loginUserId" />
-                    <infinite-loading @distance="1" @infinite="infiniteHandler"/>
-                    <input-message :room="currentRoom"
-                                    v-on:messagesent="getMessages()" />
+                    <advanced-message-container v-if="messages" :messages="messages" :loginUserId="loginUserId" :currentRoom="currentRoom" />
+
                 </div>
             </div>
-
         </div>
     </app-layout>
 </template>
@@ -28,59 +25,63 @@
     import { defineComponent } from 'vue'
     import AppLayout from '@/Layouts/AppLayout.vue'
 
-    import InputMessage from './inputMessage.vue'
     import ChatRoomSelection from './chatRoomSelection.vue'
 
     import AdvancedMessageContainer from './messageContainerV2.vue'
-
-    import InfiniteLoading from "vue-infinite-loading";
 
     export default defineComponent({
         props :['loginUserId'],
         components: {
             AppLayout,
-            InputMessage,
             ChatRoomSelection,
-            AdvancedMessageContainer,
-            InfiniteLoading,
+            AdvancedMessageContainer
         },
         data() {
             return {
                 chatRooms : [],
                 currentRoom: {},
-                messages : [],
-                page : 1,
+                messages : null,
             }
         },
         watch: {
             currentRoom(val, oldVal) {
                 // alert(oldVal.id);
                 // alert('watch:'+val.id)
-                if (oldVal && oldVal.id) {
+                if (oldVal.id) {
                     this.disconnect(oldVal);
                 }
                 this.connect();
             }
         },
-
         methods : {
             connect() {
 
-                // alert('connecto to room id : ' + this.myCurrentRoom.id);
-                let vm = this;
-                this.getMessages();
-                 window.Echo.private('chat.' + this.currentRoom.id)
-                               .listen('.message.new', e => {
-                                 vm.getMessages();
+                if (this.currentRoom.id) {
+                    // alert('connecto to room id : ' + this.myCurrentRoom.id);
+                    let vm = this;
+                    this.getMessages();
+                    window.Echo.private('chat.' + this.currentRoom.id)
+                                .listen('.message.new', e => {
+                                    // vm.getMessages();
+                                    // console.log('e:'+JSON.stringify(e));
+                                    // console.log(e.chatMessage.message);
                                     // console.log(this.messages);
-                           })
-            }
-            ,
+
+                                    // this.messages.data = [e.chatMessage, ...this.messages.data];
+                                    let chatMessages = {...this.messages};
+                                    chatMessages.data = [e.chatMessage, ...chatMessages.data];
+                                    // this.messages = null;
+                                    this.messages = {...chatMessages};
+                                    // alert(this.messages == chatMessages)
+                                    // console.log(JSON.stringify(this.messages.data))
+
+                                })
+                }
+            },
             disconnect(room) {
                 // alert('disconnect to room id : ' + room.id);
                 window.Echo.leave('chat.' + room.id);
             },
-
             getRooms() {
                 axios.get('/chat/rooms')
                 .then(response=>{
@@ -93,51 +94,34 @@
             },
 
             setRoom(room) {
-                this.currentRoom = room;
+                if (this.currentRoom != room) {
+                    if (this.currentRoom.id) {
+                        alert('disconnecting to ' + this.currentRoom.id)
+                        this.disconnect(this.currentRoom);
+                    }
+
+
+                    this.currentRoom = room;
+                    // alert('connecting to ' + this.currentRoom.id)
+                    this.connect();
+                }
+
 
             },
 
             getMessages() {
-                axios.get('/chat/room/' + this.currentRoom.id + '/messagesV2')
+                axios.get('/chat/room/' + this.currentRoom.id + '/messages')
                 .then(response=> {
-                    this.messages = response.data.data;
+                    this.messages = response.data;
                 }).catch(error => {
                     console.log(error);
                 })
-                // alert('getMessages')
-            },
-
-            async infiniteHandler($state) {
-
-                try {
-                    await this.getMessages();
-
-                    if (this.messages.length > 0) {
-                          this.messages.push(...this.messages);
-                          $state.loaded();
-
-                    } else {
-                        $state.complete();
-                    }
-                } catch (error) {
-                    // alert(error);
-                    console.log(error);
-                }
-            },
-
-
+            }
         },
 
         created() {
             this.getRooms();
-            // this.messages = this.page_messages;
-            // alert(this.loginUserId);
-            // alert(this.chatRooms[0].name);
-            // alert(this.currentRoom.id)
-            // alert('created')
-            // this.setRoom(this.currentRoom);
-
-        },
+        }
 
     })
 </script>

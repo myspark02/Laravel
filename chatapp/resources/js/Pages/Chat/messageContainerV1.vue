@@ -1,16 +1,19 @@
 <template>
 <!-- component -->
 <div class="flex-1 p:2 sm:p-6 justify-between flex flex-col h-screen">
+   <div class="flex sm:items-center justify-between py-3 border-b-2 border-gray-200">
+      
+
+   </div>
    <div id="messages" class="flex flex-col-reverse space-y-4 p-3 overflow-y-auto scrollbar-thumb-blue scrollbar-thumb-rounded scrollbar-track-blue-lighter scrollbar-w-2 scrolling-touch">
-      <div v-if="messages" v-for="message in chatMessages.data" :key="message.id">
+   <!-- <div class="grid grid-cols-1 gap-5 p-10 justify-items-center sm:grid-cols-1">  -->
+      <div v-for="message in messages_data" :key="message.id">
                 <message-item :message="message" :loginUserId="loginUserId"/>
       </div>
+     
+     
+      
    </div>
-
-   <input-message :room="currentRoom"
-         v-on:messagesent="newMessage()" />
-
-
    <div class="border-t-2 border-gray-200 px-4 pt-4 mb-2 sm:mb-0">
       <div class="relative flex">
          <span class="absolute inset-y-0 flex items-center">
@@ -59,63 +62,37 @@
 // el.scrollTop = el.scrollHeight
 
 import MessageItem from "./messageItem.vue";
-import InputMessage from './inputMessage.vue'
 
 export default {
-    components: {
-      MessageItem, 
-      InputMessage,
-    },
-
-    props : ['messages', 'loginUserId', 'currentRoom'], 
+    components: {MessageItem},
+    props : ['messages', 'loginUserId'], 
 
     data() {
         return {
-           chatMessages : this.messages,
+           messages_data : this.messages.data,
         }
     },
 
     methods: {
-       getMessages(page) {
-            let pageUrl = this.chatMessages.next_page_url;
-            if (page != null) {
-               pageUrl = page;
-            }
-            alert(pageUrl);
-            axios.get(pageUrl)
-                .then(response=> {
-                  //   console.log(response.data.length);
-                    this.chatMessages = {
-                       ...response.data,
-                       data: [...this.chatMessages.data, ...response.data.data] 
-                    }
-                }).catch(error => {
-                    console.log(error);
-            })
-       },
-
-       newMessage() {
-         this.chatMessages.data = []
-         this.getMessages(this.chatMessages.first_page_url);
-       }
+      scroll: function () {
+        const self = this;
+        window.onscroll = function(ev) {
+          if ((window.innerHeight + window.scrollY) >= document.body.scrollHeight) {
+            const messages_links = self.messages.links;
+            const next = messages_links[messages_links.length - 1];
+            if (next.url) {
+              self.$inertia.visit(next.url, {
+                preserveScroll: true,
+                preserveState: true,
+              });
+              self.messages_data.push(...self.messages.data);
+            } 
+          }
+        };
+      }
     },
     mounted () {
-      document.documentElement.scrollTop = window.innerHeight-100;
-      window.addEventListener('scroll', debounce((e) => {
-         // let pixelsFomBottom = document.documentElement.offsetHeight - document.documentElement.scrollTop - window.innerHeight;
-         // console.log(pixelsFomBottom);
-         // if (pixelsFomBottom < 200) {            
-         //   this.getMessages()
-         // } 
-         if (document.documentElement.scrollTop < 20) {
-            this.getMessages();
-         }
-      }, 100))
-    }, 
-    created() {
-       
-      
-      // alert('messages_data length: ' + this.messages_data.length);
+      this.scroll();
     }
 
     

@@ -1,5 +1,7 @@
 window._ = require('lodash');
 
+import {debounce} from "lodash/function";
+window.debounce = debounce;
 // require('dotenv').config();
 
 /**
