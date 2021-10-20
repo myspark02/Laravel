@@ -24,6 +24,7 @@ class NewChatMessage implements ShouldBroadcast
     public function __construct(ChatMessage $chatMessage)
     {
         $this->chatMessage = $chatMessage;
+        $this->dontBroadcastToCurrentUser();
     }
 
     /**

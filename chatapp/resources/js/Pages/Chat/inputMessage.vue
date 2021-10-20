@@ -3,9 +3,9 @@
         <div style="border-top:1px solid #e6e6e6;" class="grid grid-cols-6">
             <input type="text" v-model="message"
                     @keyup.enter="sendMessage()" placeholder="message here"
-                    class="col-span-5 outline-none p-1"/>
+                    class="col-span-5 p-1 outline-none"/>
             <button @click="sendMessage()"
-                    class="place-self-end bg-gray-500 hover:bg-blue-700 p-1 mt-1 rounded text-white">
+                    class="p-1 mt-1 text-white bg-gray-500 rounded place-self-end hover:bg-blue-700">
                     Send
             </button>
         </div>
@@ -29,7 +29,7 @@ export default {
             .then(response => {
                 if(response.status == 201) {
                     this.message = '';
-                    this.$emit('messagesent');
+                    this.$emit('messagesent', response.data);
                     // alert('messagesent')
                 }
             })
@@ -41,7 +41,7 @@ export default {
             //     onSuccess: () => {
             //         this.form.reset('message');
             //         this.$emit('messagesent');
-            //     }, 
+            //     },
             // })
         }
     }
