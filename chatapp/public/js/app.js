@@ -20737,6 +20737,9 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _messageContainerV2_vue__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./messageContainerV2.vue */ "./resources/js/Pages/Chat/messageContainerV2.vue");
 /* harmony import */ var _messageItem_vue__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./messageItem.vue */ "./resources/js/Pages/Chat/messageItem.vue");
 /* harmony import */ var _inputMessage_vue__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ./inputMessage.vue */ "./resources/js/Pages/Chat/inputMessage.vue");
+/* harmony import */ var nprogress__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! nprogress */ "./node_modules/nprogress/nprogress.js");
+/* harmony import */ var nprogress__WEBPACK_IMPORTED_MODULE_6___default = /*#__PURE__*/__webpack_require__.n(nprogress__WEBPACK_IMPORTED_MODULE_6__);
+/* harmony import */ var _inertiajs_inertia__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! @inertiajs/inertia */ "./node_modules/@inertiajs/inertia/dist/index.js");
 function _toConsumableArray(arr) { return _arrayWithoutHoles(arr) || _iterableToArray(arr) || _unsupportedIterableToArray(arr) || _nonIterableSpread(); }
 
 function _nonIterableSpread() { throw new TypeError("Invalid attempt to spread non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method."); }
@@ -20754,6 +20757,8 @@ function ownKeys(object, enumerableOnly) { var keys = Object.keys(object); if (O
 function _objectSpread(target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i] != null ? arguments[i] : {}; if (i % 2) { ownKeys(Object(source), true).forEach(function (key) { _defineProperty(target, key, source[key]); }); } else if (Object.getOwnPropertyDescriptors) { Object.defineProperties(target, Object.getOwnPropertyDescriptors(source)); } else { ownKeys(Object(source)).forEach(function (key) { Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key)); }); } } return target; }
 
 function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
+
+
 
 
 
@@ -20797,21 +20802,12 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
         var vm = this;
         this.getFirstMessages();
         window.Echo["private"]('chat.' + this.currentRoom.id).listen('.message.new', function (e) {
-          // vm.getMessages();
-          // console.log('e:'+JSON.stringify(e));
-          // console.log(e.chatMessage.message);
-          // console.log(this.messages);
-          // this.messages.data = [e.chatMessage, ...this.messages.data];
-          // let chatMessages = {...this.messages};
-          // chatMessages.data = [e.chatMessage, ...chatMessages.data];
-          // this.messages = null;
-          // alert('here')
+          // In Safari browser, only 'this' works, 'vm' isn't working.
           if (_this.messages.data[0] && e.chatMessage.id == _this.messages.data[0].id) return; //duplicate one, I don't know why.
 
           _this.messages = _objectSpread(_objectSpread({}, _this.messages), {}, {
             'data': [e.chatMessage].concat(_toConsumableArray(_this.messages.data))
-          }); // alert(this.messages == chatMessages)
-          // console.log(JSON.stringify(this.messages.data))
+          }); // console.log(JSON.stringify(this.messages.data))
         });
       }
     },
@@ -20862,12 +20858,24 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
         pageUrl = page;
       }
 
-      alert(pageUrl);
+      if (this.messages.current_page == this.messages.last_page) {
+        alert('No more messages...');
+        return;
+      } // if(pageUrl == null) {
+      //     alert('No more messages...')
+      // }
+      // alert(pageUrl);
+
+
+      var event_start = new Event('loading_messages_start');
+      document.documentElement.dispatchEvent(event_start);
       axios.get(pageUrl).then(function (response) {
         //   console.log(response.data.length);
         _this4.messages = _objectSpread(_objectSpread({}, response.data), {}, {
           data: [].concat(_toConsumableArray(_this4.messages.data), _toConsumableArray(response.data.data))
         });
+        var event_finish = new Event('loading_messages_finish');
+        document.documentElement.dispatchEvent(event_finish);
       })["catch"](function (error) {
         console.log(error);
       });
@@ -20894,6 +20902,18 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
   },
   created: function created() {
     this.getRooms();
+    var timeout = null;
+    document.documentElement.addEventListener('loading_messages_start', function (e) {
+      console.log('start loading');
+      timeout = setTimeout(function () {
+        return nprogress__WEBPACK_IMPORTED_MODULE_6___default().start();
+      }, 250);
+    });
+    document.documentElement.addEventListener('loading_messages_finish', function (e) {
+      console.log('end loading');
+      clearTimeout(timeout);
+      nprogress__WEBPACK_IMPORTED_MODULE_6___default().done();
+    });
   }
 }));
 

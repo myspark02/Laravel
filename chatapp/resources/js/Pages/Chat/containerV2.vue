@@ -43,6 +43,9 @@
     import MessageItem from "./messageItem.vue";
     import InputMessage from './inputMessage.vue'
 
+    import NProgress from 'nprogress'
+    import { Inertia } from '@inertiajs/inertia'
+
     export default defineComponent({
         props :['loginUserId'],
         components: {
@@ -78,20 +81,10 @@
                     this.getFirstMessages();
                     window.Echo.private('chat.' + this.currentRoom.id)
                                 .listen('.message.new', e => {
-                                    // vm.getMessages();
-                                    // console.log('e:'+JSON.stringify(e));
-                                    // console.log(e.chatMessage.message);
-                                    // console.log(this.messages);
-
-                                    // this.messages.data = [e.chatMessage, ...this.messages.data];
-                                    // let chatMessages = {...this.messages};
-                                    // chatMessages.data = [e.chatMessage, ...chatMessages.data];
-                                    // this.messages = null;
-                                    // alert('here')
+                                    // In Safari browser, only 'this' works, 'vm' isn't working.
                                     if(this.messages.data[0] && e.chatMessage.id == this.messages.data[0].id)
                                         return;  //duplicate one, I don't know why.
                                     this.messages = {...this.messages, 'data':[e.chatMessage, ...this.messages.data]};
-                                    // alert(this.messages == chatMessages)
                                     // console.log(JSON.stringify(this.messages.data))
 
                                 })
@@ -146,7 +139,16 @@
                 if (page != null) {
                     pageUrl = page;
                 }
-                alert(pageUrl);
+                if(this.messages.current_page == this.messages.last_page) {
+                    alert('No more messages...')
+                    return;
+                }
+                // if(pageUrl == null) {
+                //     alert('No more messages...')
+                // }
+                // alert(pageUrl);
+                const event_start = new Event('loading_messages_start');
+                document.documentElement.dispatchEvent(event_start);
                 axios.get(pageUrl)
                     .then(response=> {
                     //   console.log(response.data.length);
@@ -154,6 +156,8 @@
                         ...response.data,
                         data: [...this.messages.data, ...response.data.data]
                         }
+                        const event_finish = new Event('loading_messages_finish');
+                        document.documentElement.dispatchEvent(event_finish);
                     }).catch(error => {
                         console.log(error);
                 })
@@ -179,11 +183,23 @@
             if (document.documentElement.scrollTop < 20) {
                 this.getMoreMessages();
             }
-            }, 100))
+            }, 100));
         },
 
         created() {
             this.getRooms();
+
+            let timeout = null;
+            document.documentElement.addEventListener('loading_messages_start', (e) => {
+                console.log('start loading')
+                timeout = setTimeout(()=>NProgress.start(), 250)
+            });
+
+            document.documentElement.addEventListener('loading_messages_finish', (e)=>{
+                console.log('end loading')
+                clearTimeout(timeout);
+                NProgress.done();
+            })
         }
 
     })

@@ -21,7 +21,7 @@ class ChatController extends Controller
             [
                 'chatRooms' => $rooms,
                 'currentRoom' => $rooms[0],
-                'messages' => ChatMessage::where('chat_room_id', $rooms[0]->id)->with('user')->latest()->paginate(3),
+                'messages' => ChatMessage::where('chat_room_id', $rooms[0]->id)->with('user')->latest()->paginate(20),
                 'loginUserId' => auth()->user()->id
             ]
         );
@@ -47,7 +47,7 @@ class ChatController extends Controller
         if ($request->wantsJson()) {
             // dd('json');
             return ChatMessage::where('chat_room_id', $roomId)
-                ->with('user')->latest()->paginate(3);
+                ->with('user')->latest()->paginate(20);
         }
 
         $rooms = ChatRoom::all();
@@ -56,7 +56,7 @@ class ChatController extends Controller
             [
                 'chatRooms' => fn () => $rooms,
                 'currentRoom' => fn () => ChatRoom::find($roomId),
-                'messages' => fn () => ChatMessage::where('chat_room_id', $roomId)->with('user')->latest()->paginate(3),
+                'messages' => fn () => ChatMessage::where('chat_room_id', $roomId)->with('user')->latest()->paginate(20),
                 'loginUserId' => auth()->user()->id,
             ]
         );
