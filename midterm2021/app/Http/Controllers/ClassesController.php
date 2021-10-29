@@ -17,12 +17,11 @@ class ClassesController extends Controller
     public function index()
     {
 
-        return Inertia::render('ClassList', ['subjects'=>fn()=>Subject::latest()->paginate(10)]);
+        return Inertia::render('ClassList', ['subjects' => fn () => Subject::latest()->paginate(2)]);
     }
 
     public function index_cr()
     {
-
     }
 
     /**
@@ -45,7 +44,7 @@ class ClassesController extends Controller
     {
         //
 
-        $request->validate(['name' =>'required', 'description'=>'required', 'credit' => 'required|numeric']);
+        $request->validate(['name' => 'required', 'description' => 'required', 'credit' => 'required|numeric']);
         // dd($request->description);
         // Subject::create(
         //                 [
@@ -71,7 +70,8 @@ class ClassesController extends Controller
      */
     public function show($id)
     {
-        //
+        $subject = Subject::find($id);
+        return Inertia::render('ShowClass', ['subject' => $subject]);
     }
 
     /**
