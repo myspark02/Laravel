@@ -49,3 +49,6 @@ Route::middleware(['auth:sanctum', 'verified'])->delete('/classes/delete/{classI
 
 Route::middleware(['auth:sanctum', 'verified'])->post('/classes/register/{classId}', [ClassesController::class, 'register'])
     ->name('classes.register'); // 수강신청 및 수강취소 
+
+Route::middleware(['auth:sanctum', 'verified'])->get('/classes/users/{classId}', [ClassesController::class, 'users'])
+    ->name('classes.users'); // 수강신청한 사용자 리스트

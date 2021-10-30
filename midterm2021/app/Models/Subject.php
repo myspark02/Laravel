@@ -11,6 +11,8 @@ class Subject extends Model
 
     protected $fillable = ['name', 'credit', ' description'];
 
+    protected $with = ['users'];
+
     function users()
     {
         return $this->belongsToMany(User::class);

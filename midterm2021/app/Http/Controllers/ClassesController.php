@@ -22,6 +22,9 @@ class ClassesController extends Controller
 
     public function index_cr()
     {
+        auth()->user()->load('subjects.users');
+
+        return Inertia::render('ClassesRegistered', ['subjects' => fn () => auth()->user()->subjects]);
     }
 
     /**
@@ -137,5 +140,13 @@ class ClassesController extends Controller
         auth()->user()->subjects()->toggle($id);
 
         return Redirect::route('classes.show', ['classId' => $id]);
+    }
+
+    public function users($id)
+    {
+        // $subject = Subject::find($id);
+
+        // dd(Subject::find($id)->users()->paginate(2));
+        return Inertia::render('ClassUsers', ['users' => fn () => Subject::find($id)->users()->paginate(2)]);
     }
 }
