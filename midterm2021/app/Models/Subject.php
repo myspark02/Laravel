@@ -9,5 +9,10 @@ class Subject extends Model
 {
     use HasFactory;
 
-    protected $fillable = ['name', 'credit',' description'];
+    protected $fillable = ['name', 'credit', ' description'];
+
+    function users()
+    {
+        return $this->belongsToMany(User::class);
+    }
 }

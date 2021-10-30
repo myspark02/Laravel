@@ -13,17 +13,20 @@
                             <div class="mb-4">
                                 <label class="text-xl text-gray-600">교과목명 <span class="text-red-500">*</span></label>
                                 <input type="text" class="w-full p-2 border-2 border-gray-300" v-model="form.name">
+                                <div v-if="errors.name"><span class="text-red-500">{{ errors.name }}</span></div>
                             </div>
 
                             <div class="mb-4">
                                 <label class="text-xl text-gray-600">학점</label>
                                 <input type="number" class="w-full p-2 border-2 border-gray-300" v-model="form.credit">
+                                <div v-if="errors.credit"><span class="text-red-500">{{ errors.credit }}</span></div>
                             </div>
 
                             <div class="mb-8">
                                 <label class="text-xl text-gray-600">교과목 설명 <span class="text-red-500">*</span></label>
                                 <!-- <textarea v-model="form.description" id="description" class="border-2 border-gray-500 ckeditor"></textarea> -->
                                 <ckeditor :editor="editor" v-model="form.description" :config="editorConfig"></ckeditor>
+                                <div v-if="errors.description"><span class="text-red-500">{{ errors.description }}</span></div>
                             </div>
 
                             <div class="flex p-1">
@@ -44,6 +47,9 @@
     import AppLayout from '@/Layouts/AppLayout.vue'
 
     export default defineComponent({
+        props : {
+            errors:Object, 
+        }, 
         components: {
             AppLayout,
         },

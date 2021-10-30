@@ -70,8 +70,18 @@ class ClassesController extends Controller
      */
     public function show($id)
     {
-        $subject = Subject::find($id);
-        return Inertia::render('ShowClass', ['subject' => $subject]);
+        // $subject = Subject::find($id);
+        // return Inertia::render('ShowClass', ['subject' => $subject]);
+
+        // Partial reloads를 고려해 아래와 같이 수정한다. 
+        // 로그인한 사용자가 $id에 해당하는 과목을 이미 수강신청했는지 여부도 함께 전달한다.
+        return Inertia::render(
+            'ShowClass',
+            [
+                'subject' => fn () => Subject::find($id),
+                'registeredClass' => fn () => auth()->user()->subjects->contains($id),
+            ]
+        );
     }
 
     /**
@@ -94,7 +104,16 @@ class ClassesController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+        $request->validate(['name' => 'required', 'description' => 'required', 'credit' => 'required|numeric']);
+        $subject = Subject::find($id);
+
+        $subject->name = $request->name;
+        $subject->credit = $request->credit;
+        $subject->description = $request->description;
+
+        $subject->save();
+
+        return Redirect::route('classes.show', ['classId' => $id]);
     }
 
     /**
@@ -105,6 +124,18 @@ class ClassesController extends Controller
      */
     public function destroy($id)
     {
-        //
+        $subject = Subject::find($id);
+
+        $subject->delete();
+
+        return Redirect::route('classes');
+    }
+
+    public function register($id)
+    {
+        // subject_user 테이블에 [auth()->user()->id, $id] 레코드가 있으면 삭제, 없으면 삽입.
+        auth()->user()->subjects()->toggle($id);
+
+        return Redirect::route('classes.show', ['classId' => $id]);
     }
 }

@@ -58,4 +58,9 @@ class User extends Authenticatable
     protected $appends = [
         'profile_photo_url',
     ];
+
+    function subjects()
+    {
+        return $this->belongsToMany(Subject::class);
+    }
 }

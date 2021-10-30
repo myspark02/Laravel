@@ -31,18 +31,21 @@ Route::middleware(['auth:sanctum', 'verified'])->get('/dashboard', function () {
 
 
 Route::middleware(['auth:sanctum', 'verified'])->get('/classes/registered', [ClassesController::class, 'index_cr'])
-            ->name('classes.registered'); // 수강신청한 교과목 리스트 보기
+    ->name('classes.registered'); // 수강신청한 교과목 리스트 보기
 Route::middleware(['auth:sanctum', 'verified'])->get('/classes', [ClassesController::class, 'index'])
-            ->name('classes'); // 교과목 리스트 보기
+    ->name('classes'); // 교과목 리스트 보기
 Route::middleware(['auth:sanctum', 'verified'])->get('/classes/show/{classId}', [ClassesController::class, 'show'])
-            ->name('classes.show'); // 특정 교과목 상세보기
+    ->name('classes.show'); // 특정 교과목 상세보기
 Route::middleware(['auth:sanctum', 'verified'])->get('/classes/create', [ClassesController::class, 'create'])
-            ->name('classes.create'); // 교과목 등록 폼
+    ->name('classes.create'); // 교과목 등록 폼
 Route::middleware(['auth:sanctum', 'verified'])->post('/classes/store', [ClassesController::class, 'store'])
-            ->name('classes.store'); // 교과목 등록
-Route::middleware(['auth:sanctum', 'verified'])->get('/classes/edit/{classId}', [ClassesController::class, 'edit'])
-            ->name('classes.edit');//  교과목 변경 폼
+    ->name('classes.store'); // 교과목 등록
+// Route::middleware(['auth:sanctum', 'verified'])->get('/classes/edit/{classId}', [ClassesController::class, 'edit'])
+//             ->name('classes.edit');//  교과목 변경 폼
 Route::middleware(['auth:sanctum', 'verified'])->patch('/classes/update/{classId}', [ClassesController::class, 'update'])
-            ->name('classes.update'); // 교과목 변경
+    ->name('classes.update'); // 교과목 변경
 Route::middleware(['auth:sanctum', 'verified'])->delete('/classes/delete/{classId}', [ClassesController::class, 'destroy'])
-            ->name('classes.destroy'); // 교과목 삭제
+    ->name('classes.destroy'); // 교과목 삭제
+
+Route::middleware(['auth:sanctum', 'verified'])->post('/classes/register/{classId}', [ClassesController::class, 'register'])
+    ->name('classes.register'); // 수강신청 및 수강취소 
