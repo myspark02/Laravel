@@ -34,9 +34,11 @@
                         </div>                                                
 
                         <div class="flex p-1 mb-8">
-                            <button  @click="open_update_modal"
+                            <button  v-if="$page.props.isAdmin"
+                                @click="open_update_modal"
                                 class="p-3 mr-4 text-white bg-blue-500 hover:bg-blue-400" required>수정</button>
-                            <button @click="delete_class"
+                            <button v-if="$page.props.isAdmin"
+                                @click="delete_class"
                                 class="p-3 mr-4 text-white bg-red-400 hover:bg-red-600" required>삭제</button>
 
                             <button @click="register_class" v-if="registeredClass==false"

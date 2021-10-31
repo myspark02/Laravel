@@ -48,9 +48,11 @@
                                         </td>
                                         <td class="px-5 py-5 border-b border-gray-200 bg-white text-sm">
                                             <p class="text-gray-900 whitespace-no-wrap">
-                                                <Link :href="'/classes/users/'+ subject.id" method="get" type="button">  
+                                                <Link v-if="$page.props.isAdmin"
+                                                    :href="'/classes/users/'+ subject.id" method="get" type="button">  
                                                     {{subject.users.length}} 
                                                 </Link>
+                                                <span v-if="$page.props.isAdmin==false"> {{subject.users.length}} </span>
                                             </p>
                                         </td>                                     
                                     </tr>

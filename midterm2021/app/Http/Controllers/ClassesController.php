@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Subject;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Gate;
 use Illuminate\Support\Facades\Redirect;
 use Inertia\Inertia;
 
@@ -16,8 +17,11 @@ class ClassesController extends Controller
      */
     public function index()
     {
-
-        return Inertia::render('ClassList', ['subjects' => fn () => Subject::latest()->paginate(2)]);
+        if (Gate::allows('create-class')) {
+            return Inertia::render('ClassList', ['subjects' => fn () => Subject::with('users')->latest()->paginate(2)]);
+        } else {
+            return Inertia::render('ClassList', ['subjects' => fn () => Subject::latest()->paginate(2)]);
+        }
     }
 
     public function index_cr()
@@ -46,6 +50,10 @@ class ClassesController extends Controller
     public function store(Request $request)
     {
         //
+
+        if (!Gate::allows('create-class')) {   // Illuminate/Support/Facades/Gate
+            abort(403);
+        }
 
         $request->validate(['name' => 'required', 'description' => 'required', 'credit' => 'required|numeric']);
         // dd($request->description);
@@ -147,6 +155,14 @@ class ClassesController extends Controller
         // $subject = Subject::find($id);
 
         // dd(Subject::find($id)->users()->paginate(2));
-        return Inertia::render('ClassUsers', ['users' => fn () => Subject::find($id)->users()->paginate(2)]);
+
+        if (!Gate::allows('view-registerred-users')) {
+            abort(403);
+        }
+
+        return Inertia::render(
+            'ClassUsers',
+            ['users' => fn () => Subject::find($id)->users()->paginate(2)]
+        );
     }
 }

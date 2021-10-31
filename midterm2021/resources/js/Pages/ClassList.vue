@@ -22,10 +22,15 @@
                                             class="px-5 py-3 border-b-2 border-gray-200 bg-gray-100 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
                                             학점
                                         </th>
+
+                                        <th v-if="$page.props.isAdmin" @click="sort"
+                                            class="px-5 py-3 border-b-2 border-gray-200 bg-gray-100 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
+                                            수강자 수
+                                        </th>
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    <tr v-for="subject in subjects.data" :key="subject.id">
+                                    <tr v-for="subject in subjectList" :key="subject.id">
                                         <td class="px-5 py-5 border-b border-gray-200 bg-white text-sm">
                                             <p class="text-gray-900 whitespace-no-wrap"> 
                                                 <Link :href="'/classes/show/'+subject.id"> {{ subject.name }} </Link>
@@ -36,6 +41,17 @@
                                                 {{ subject.credit }}
                                             </p>
                                         </td>
+
+                                        <td v-if="$page.props.isAdmin"
+                                            class="px-5 py-5 border-b border-gray-200 bg-white text-sm">
+                                            <p class="text-gray-900 whitespace-no-wrap">
+                                                <Link v-if="$page.props.isAdmin"
+                                                    :href="'/classes/users/'+ subject.id" method="get" type="button">  
+                                                    {{subject.users.length}} 
+                                                </Link>
+                                            </p>
+                                        </td>
+
                                     </tr>
                                 </tbody>
                             </table>
@@ -45,7 +61,7 @@
                             </div>
                         </div>
                     </div>
-                </div>
+                </div> 
             </div>
         </body>
     </app-layout>
@@ -69,11 +85,21 @@
         },
         data() {
             return {
-
+                subjectList : this.subjects.data,
+                toggle : true,
             }
         },
         methods : {
-
+            sort() {
+                let vm = this;
+                this.subjectList.sort(function (s1, s2) {
+                    if (vm.toggle)
+                        return s1.users.length - s2.users.length;
+                    else 
+                        return s2.users.length - s1.users.length;
+                });
+                this.toggle = !this.toggle;
+            }
         }
     }
 )
