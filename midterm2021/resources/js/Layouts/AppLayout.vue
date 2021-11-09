@@ -18,7 +18,7 @@
                             </div>
 
                             <!-- Navigation Links -->
-                            <div class="hidden space-x-8 sm:-my-px sm:ml-10 sm:flex">
+                            <div class="hidden space-x-8 sm:-my-px sm:ml-10 sm:flex" id="menu">
                                 <jet-nav-link :href="route('classes.registered')" :active="route().current('classes.registered')">
                                     수강목록
                                 </jet-nav-link>
@@ -155,7 +155,7 @@
                         <jet-responsive-nav-link :href="route('classes')" :active="route().current('classes')">
                             교과목 목록
                         </jet-responsive-nav-link>
-                        <jet-responsive-nav-link v-if="$page.props.isAdmin" 
+                        <jet-responsive-nav-link v-if="$page.props.isAdmin"
                             :href="route('classes.create')" :active="route().current('classes.create')">
                             교과목 등록
                         </jet-responsive-nav-link>
