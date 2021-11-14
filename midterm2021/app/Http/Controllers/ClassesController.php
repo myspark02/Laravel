@@ -38,7 +38,7 @@ class ClassesController extends Controller
      */
     public function create()
     {
-        return Inertia::render('CreateClass');
+        return Inertia::render('CreateClass', ['dusk' => 'create-class']);
     }
 
     /**

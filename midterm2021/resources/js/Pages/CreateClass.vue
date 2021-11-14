@@ -9,23 +9,22 @@
             <div class="mx-auto max-w-7xl sm:px-6 lg:px-8">
                 <div class="overflow-hidden bg-white shadow-sm sm:rounded-lg">
                     <div class="p-6 bg-white border-b border-gray-200">
-                        <form @submit.prevent="submit">
+                        <form @submit.prevent="submit" id="create">
                             <div class="mb-4">
                                 <label class="text-xl text-gray-600">교과목명 <span class="text-red-500">*</span></label>
-                                <input type="text" class="w-full p-2 border-2 border-gray-300" v-model="form.name">
+                                <input type="text" id="name" class="w-full p-2 border-2 border-gray-300" v-model="form.name">
                                 <div v-if="errors.name"><span class="text-red-500">{{ errors.name }}</span></div>
                             </div>
 
                             <div class="mb-4">
                                 <label class="text-xl text-gray-600">학점</label>
-                                <input type="number" class="w-full p-2 border-2 border-gray-300" v-model="form.credit">
+                                <input type="number" class="w-full p-2 border-2 border-gray-300" id="credit" v-model="form.credit">
                                 <div v-if="errors.credit"><span class="text-red-500">{{ errors.credit }}</span></div>
                             </div>
 
                             <div class="mb-8">
                                 <label class="text-xl text-gray-600">교과목 설명 <span class="text-red-500">*</span></label>
-                                <!-- <textarea v-model="form.description" id="description" class="border-2 border-gray-500 ckeditor"></textarea> -->
-                                <ckeditor :editor="editor" v-model="form.description" :config="editorConfig"></ckeditor>
+                                <ckeditor id="description" :editor="editor" v-model="form.description" :config="editorConfig"></ckeditor>
                                 <div v-if="errors.description"><span class="text-red-500">{{ errors.description }}</span></div>
                             </div>
 
