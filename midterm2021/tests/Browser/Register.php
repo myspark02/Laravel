@@ -9,6 +9,8 @@ use Inertia\Testing\Assert;
 
 class Register extends DuskTestCase
 {
+    use DatabaseMigrations;
+
     /**
      * A Dusk test example.
      *
@@ -28,16 +30,17 @@ class Register extends DuskTestCase
 
         $this->browse(function (Browser $browser) {
             $browser->visit('/register')
-                    ->type('#name', 'chsung11')
-                    ->type('#email', 'chsung11@gmail.com')
+                    ->type('#name', 'chsung1')
+                    ->type('#email', 'chsung1@gmail.com')
                     ->type('#password', '11111111')
                     ->type('#password_confirmation', '11111111')
                     ->press('button[type="submit"]')
-                    // ->waitUntilMissing('#nprogress');
-                    ->waitFor('#app')
+                    // ->waitUntilMissing('#nprogress')
+                    ->waitFor('#menu')
                     // ->assertPathIs('/dashboard');
-                    // ->assertSee('Laravel Jetstream');
-                    ->assertSee('Dashboard');
+                    // ->assertSee('Welcome');
+                    // ->waitForText('Dashboard')
+                    ->assertSee('수강목록');
                     // ->assertInertia(fn (Assert $page) => $page->component('Pages/Dashboard')->has('name', 'chsung6'));
         });
     }
